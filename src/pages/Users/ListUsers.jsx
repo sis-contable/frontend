@@ -55,7 +55,10 @@ const ListUsers = () => {
     const handleCreateSave = async (newUser) => {
         // Aquí enviarías newUser al backend para guardarlo en la base de datos
         // Suponiendo que el backend responde con el usuario creado, podrías hacer algo así:
-        setUsers([...users, newUser]); // Agrega el nuevo usuario al estado de 'users'
+        if(newUser){
+            // Actualizar lista
+            await fetchData();
+        }
         setShowCreateModal(false); // Oculta el modal de creación
     };
 

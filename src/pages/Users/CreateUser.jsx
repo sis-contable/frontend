@@ -13,24 +13,53 @@ const CreateUser = ({ show, onClose, onCreate }) => {
     })
     const [showPassword, setShowPassword] = useState(false); // Estado para manejar la visibilidad de la contraseña
     const [showSuccess, setShowSuccess] = useState(false); // Estado para manejar el mensaje de cambios guardados
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); // Estado para manejar el mensaje de error
+    
+    // Función para limpiar los campos del formulario
+    const clearFormFields = () => {
+        setNewUser({ ...newUser, 
+            nombre: '',
+            usuario: '',
+            password: '',
+            id_tipo_usuario: 1, //Valor por defecto
+            email: ''
+         });
+    };
     
     // Función para manejar cambios en los campos del formulario
     const handleChange = (e) => {
         const {name, value} = e.target;
-        setNewUser({ newUser, [name]: value });
+        setNewUser({ ...newUser, [name]: value });
     };
 
      // Función para guardar los cambios y llamar a la función 'onCreate' pasada como prop
      const handleCreateUser = async () => {
-        const createdUser = await createUserService(newUser);
-        if(createdUser){
-            setShowSuccess(true); // Muestra la alerta
+        if(newUser.nombre == '' || newUser.usuario == '' || newUser.password == '' || newUser.email == ''){
+            setErrorMessage('Todos los campos son requeridos'); // Establece el mensaje de error
+            setShowError(true); // Muestra la alerta de error
             setTimeout(() => {
-                setShowSuccess(false); // Oculta la alerta después de 2 segundos
-                onCreate(createdUser); // Llama a onCreate con el nuevo usuario creado
-                onClose();//Cierra el modal
-            },700);
-            
+                setShowError(false); // Oculta la alerta después de 2 segundos
+            }, 2000);
+        } else{
+            const createdUser = await createUserService(newUser);
+            if (createdUser.error) {
+                // Mostrar la alerta de error si hubo un problema
+                setErrorMessage(createdUser.error); // Establece el mensaje de error
+                setShowError(true); // Muestra la alerta de error
+                setTimeout(() => {
+                    setShowError(false); // Oculta la alerta después de 2 segundos
+                }, 2000);
+                clearFormFields();//Limpiamos los campos
+            } else {
+                setShowSuccess(true); // Muestra la alerta de éxito
+                setTimeout(() => {
+                    setShowSuccess(false); // Oculta la alerta después de un tiempo
+                    onCreate(createdUser); // Llama a onCreate con el nuevo usuario creado
+                    onClose(); // Cierra el modal
+                }, 2000);
+                clearFormFields();
+            }
         }
     };
 
@@ -49,6 +78,12 @@ const CreateUser = ({ show, onClose, onCreate }) => {
                 {showSuccess && (
                     <Alert variant="success" className="custom-alert">
                         Usuario creado con éxito.
+                    </Alert>
+                )}
+                {/* Mostrar la alerta de error si showError es true */}
+                {showError && (
+                    <Alert variant="danger" className="custom-alert">
+                        Error: {errorMessage}
                     </Alert>
                 )}
                 <Form>
