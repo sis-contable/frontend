@@ -32,7 +32,8 @@ const Header = ({setLoginSuccessful}) => {
             <Link className="nav-link active" to="/home">Home</Link>
             <Link className="nav-link" to="/">Caja</Link>
             <Link className="nav-link" to="/ListUsers">Usuarios</Link>
-            <Link className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Disabled</Link> 
+            <Link className="nav-link" to="/ListRegister">Libros</Link>
+            {/*<Link className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Disabled</Link>*/}
           </div>
           
           <div className='d-flex     justify-content-center'> {/* Contenedor para el enlace de Logout */}

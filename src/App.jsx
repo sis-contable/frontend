@@ -5,6 +5,7 @@ import Home from './pages/Home/Home'; // Importa el componente Home (suponiendo 
 import ListUsers from './pages/Users/ListUsers'; // Importa el componente ListUsers
 import Login from './pages/Login/Login';
 import React, { useState } from 'react';
+import ListRegister from './pages/Books/DiaryBook/ListRegister';
 
 const App = () => {
   const [loginSuccessful, setLoginSuccessful] = useState(localStorage.getItem('token'));
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/login" element={!loginSuccessful ? <Login setLoginSuccessful={setLoginSuccessful} /> : <Navigate to="/" />} />
           <Route path='/home' element={<Home />} /> {/* Ruta para la página Home */}
           <Route path='/ListUsers' element={<ListUsers />} /> {/* Ruta para la página ListUsers */}
+          <Route path='/ListRegister' element={<ListRegister />} /> {/* Ruta para la página ListRegister */}
         </Routes>
       </Router>
     </div>
