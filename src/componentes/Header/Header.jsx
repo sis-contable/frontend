@@ -32,7 +32,7 @@ const Header = ({setLoginSuccessful}) => {
             <Link className="nav-link active" to="/home">Home</Link>
             <Link className="nav-link" to="/">Caja</Link>
             <Link className="nav-link" to="/ListUsers">Usuarios</Link>
-            <Link className="nav-link" to="/ListRegister">Libros</Link>
+            <Link className="nav-link" to="/DiaryBook">Libros</Link>
             {/*<Link className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Disabled</Link>*/}
           </div>
           

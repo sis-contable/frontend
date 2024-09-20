@@ -25,12 +25,10 @@ const Login = () => {
     try {
       // Llamamos a la función loginService para enviar los datos al servidor y obtener una respuesta
       const result = await loginService(data);
-      console.log(result);
 
       // Si el servidor devuelve un token, lo almacenamos en localStorage y actualizamos el estado
       if (result.token) {
         localStorage.setItem('id_usuario', result.id_usuario); 
-        console.log(result.id_usuario);// Guardar el id_usuario
         localStorage.setItem('token', result.token);
         setLoginSuccessful(true);
       } else {
