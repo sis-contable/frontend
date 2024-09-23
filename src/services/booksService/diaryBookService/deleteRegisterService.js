@@ -1,4 +1,4 @@
-const deleteUserService = async (registrerID) => {
+const deleteRegisterService = async (registrerID) => {
     try {
 
         console.log('ID del registro:', registrerID); 
@@ -21,4 +21,4 @@ const deleteUserService = async (registrerID) => {
     }
 };
 
-export default deleteUserService;
+export default deleteRegisterService;
