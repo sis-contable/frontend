@@ -96,9 +96,9 @@ const handleCloseDelete = () => {
 
   return (
     
-    <div className="container-fluid ">
+    <div className="container-fluid mt-4 px-4">
       <h4 className='mb-3'>Registros</h4>
-      <div className="d-flex justify-content-evenly  mb-4">
+      <div className="d-flex justify-content-evenly mt-4 mb-4 align-items-center">
         <FilterByDate onSearchDates={handleDateFilter} />
         <FilterByKeyword onSearchKeyword={handleKeywordFilter} />
       </div>

@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Header from './componentes/Header/Header'; // Importa el componente Header
 import Home from './pages/Home/Home'; // Importa el componente Home (suponiendo que tienes este componente)
 import ListUsers from './pages/Users/ListUsers'; // Importa el componente ListUsers
+import DiaryBook from './pages/Books/DiaryBook/DiaryBook'
 import Login from './pages/Login/Login';
 import React, { useState } from 'react';
-import DiaryBook from './pages/Books/DiaryBook/DiaryBook';
 
 const App = () => {
   const [loginSuccessful, setLoginSuccessful] = useState(localStorage.getItem('token'));
@@ -18,7 +18,7 @@ const App = () => {
         <Route path="/login" element={!loginSuccessful ? <Login setLoginSuccessful={setLoginSuccessful} /> : <Navigate to="/" />} />
           <Route path='/home' element={<Home />} /> {/* Ruta para la página Home */}
           <Route path='/ListUsers' element={<ListUsers />} /> {/* Ruta para la página ListUsers */}
-          <Route path='/DiaryBook' element={<DiaryBook />} /> {/* Ruta para la página DiaryBook */}
+          <Route path='/DiaryBook' element={<DiaryBook />} /> {/* Ruta para la página ListRegister */}
         </Routes>
       </Router>
     </div>

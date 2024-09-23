@@ -21,14 +21,13 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevenimos el comportamiento por defecto del formulario
     const data = { usuario, clave }; // Creamos un objeto con los datos del formulario
-
     try {
       // Llamamos a la función loginService para enviar los datos al servidor y obtener una respuesta
       const result = await loginService(data);
 
       // Si el servidor devuelve un token, lo almacenamos en localStorage y actualizamos el estado
       if (result.token) {
-        localStorage.setItem('id_usuario', result.id_usuario); 
+        localStorage.setItem('id_usuario' , result.id_usuario)
         localStorage.setItem('token', result.token);
         setLoginSuccessful(true);
       } else {

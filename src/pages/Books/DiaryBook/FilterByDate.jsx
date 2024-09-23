@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import getListRegisterByDateService from "../../../services/booksService/diaryBookService/getListRegisterByDate";
+import getListRegisterByDateService from "../../../services/booksService/diaryBookService/getListRegisterByDateService";
 
 const SearchByDate = ({ onSearchDates }) => {
-  const [jsonDates, setJsonDate] = useState({
-    fecha_desde : '',
-    fecha_hasta : ''
-  });
+  const [fechaDesde , setFechaDesde] = useState('');
+  const [fechaHasta , setFechaHasta] = useState('');
   const [loading, setLoading] = useState(false); // Para manejar el estado de carga
 
   const handleSearch = async () => {
     setLoading(true); // Iniciar el estado de carga
-    const result = await getListRegisterByDateService(jsonDates); // Llamar al servicio
-
+    const result = await getListRegisterByDateService(fechaDesde , fechaHasta); // Llamar al servicio
+    console.log(fechaDesde , fechaHasta);
     if (result.error) {
       alert('Error al filtrar los registros');
     } else if (onSearchDates) {
@@ -20,16 +18,9 @@ const SearchByDate = ({ onSearchDates }) => {
     setLoading(false); // Terminar el estado de carga
   };
 
-  // Función para actualizar las fechas
-  const handleDateChange = (e) => {
-    setJsonDate({
-      ...jsonDates,
-      [e.target.name]: e.target.value
-    });
-  };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid ">
       <div className="row g-3 justify-content-between">
         {/* Campo para la fecha de inicio */}
         <div className="col-12 col-md-4">
@@ -38,11 +29,11 @@ const SearchByDate = ({ onSearchDates }) => {
           </label>
           <input
             required
-            name="fecha_desde"
+            name="fechaDesde"
             type="date"
             className="form-control"
-            value={jsonDates.fecha_desde}
-            onChange={handleDateChange}
+            value={fechaDesde}
+            onChange={(e) => setFechaDesde(e.target.value)} 
             placeholder="Desde"
           />
         </div>
@@ -54,11 +45,11 @@ const SearchByDate = ({ onSearchDates }) => {
           </label>
           <input
             required
-            name="fecha_hasta"
+            name="fechahasta"
             type="date"
             className="form-control"
-            value={jsonDates.fecha_hasta}
-            onChange={handleDateChange}
+            value={fechaHasta}
+            onChange={(e) => setFechaHasta(e.target.value)} 
             placeholder="Hasta"
           />
         </div>
