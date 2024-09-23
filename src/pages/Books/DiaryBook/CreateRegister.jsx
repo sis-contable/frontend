@@ -96,7 +96,7 @@ function CreateRegister({ onAddRegister }) {
         "Debe" o "Haber" debe ser 0 , tampoco pueden ser los 2 valores 0.
       </Alert>
     )}
-    <Form onSubmit={handleSubmit} className="p-3 border rounded">
+    <Form onSubmit={handleSubmit} className="p-3 border rounded m-4">
       <h5 className='mb-4'>Cargar Registro</h5>
       <Row className="align-items-center g-3 pb-2">
         <Col xs="12" md="6">

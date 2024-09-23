@@ -96,7 +96,7 @@ const handleCloseDelete = () => {
 
   return (
     
-    <div className="container-fluid ">
+    <div className="container-fluid mt-5 px-4">
       <h4 className='mb-3'>Registros</h4>
       <div className="d-flex justify-content-evenly  mb-4">
         <FilterByDate onSearchDates={handleDateFilter} />
@@ -163,7 +163,7 @@ const handleCloseDelete = () => {
             disabled={currentPage === totalPages} 
           />
         </Pagination>
-        <div style={{ display: 'flex', justifyContent: 'space-between' , marginBottom: '20px' }}>
+        <div class="d-flex justify-content-between mb-4">
           <Button
             variant="secondary" 
             onClick={() => handleDeleteClick()} 
@@ -184,8 +184,6 @@ const handleCloseDelete = () => {
  
     </div>
     
-
-
   );
 };
 
