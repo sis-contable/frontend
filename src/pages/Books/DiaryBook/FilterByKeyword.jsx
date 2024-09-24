@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import getListRegisterByWordService from "../../../services/booksService/diaryBookService/getListRegisterByWord";
+import getListRegisterByWordService from "../../../services/booksService/diaryBookService/getListRegisterByWordService";
 
 const SearchByKeyword = ({ onSearchKeyword }) => {
   const [keyword, setKeyword] = useState('');
@@ -11,6 +11,7 @@ const SearchByKeyword = ({ onSearchKeyword }) => {
       return;
     }
     setLoading(true); // Iniciar el estado de carga
+    console.log(keyword);
     const result = await getListRegisterByWordService(keyword); // Llamar al servicio
 
     if (result.error) {
@@ -24,7 +25,7 @@ const SearchByKeyword = ({ onSearchKeyword }) => {
 
   return (
     <div className="container-fluid">
-      <div className="row g-2 justify-content-between">
+      <div className="row g-2 justify-content-between ">
         <div className="col-12 col-md-6">
           <label className="form-label">Buscar por palabra</label>
           <input 

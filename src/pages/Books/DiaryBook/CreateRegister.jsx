@@ -11,6 +11,7 @@ import createRegisterService from '../../../services/booksService/diaryBookServi
 function CreateRegister({ onAddRegister }) {
 
   const storedIdUsuario = localStorage.getItem('id_usuario');
+
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
