@@ -7,14 +7,13 @@ const createUserService = async (newUser) => {
             },
             body: JSON.stringify(newUser),
         });
-        const data = await response.json(); // Obtener el contenido JSON de la respuesta
         if (response.ok) {
-            return data; // Devuelve los datos del usuario creado
+            return newUser;
         } else {
-            return { error: data.message || "Error al crear el usuario" }; // Devuelve el mensaje de error del backend
+            return null;
         }
     } catch (error) {
-        return { error: error.message }; // Retorna el mensaje de error si ocurre un fallo en la solicitud
+        return null;
     }
 };
 
