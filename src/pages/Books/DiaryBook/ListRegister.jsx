@@ -1,13 +1,12 @@
 import React, { useState , useEffect } from "react";
 import { Table, Pagination, Button } from "react-bootstrap";
 import { BsCheckLg } from "react-icons/bs"; // Ícono de tilde grande
-import CreateRegister from "./CreateRegister";
 import listRegisterService from "../../../services/booksService/diaryBookService/listRegisterService";
 import DeleteRegister from "./DeleteRegister";
 import FilterByDate from "./FilterByDate";
 import FilterByKeyword from "./FilterByKeyword";
 
-const ListRegister = () => {
+const ListRegister = ({ updateCount }) => {
 
   const [registros, setRegistros] = useState([]);  // Estado para almacenar los registros
   const [selectedRegisterID, setSelectedRegisterID] = useState(null); // Estado para almacenar el ID del registro seleccionado para eliminar
@@ -15,9 +14,6 @@ const ListRegister = () => {
   const [selectedRowData, setSelectedRowData] = useState(null); // Estado para los datos de la fila seleccionada
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5; // Define el número de registros por página
-  const [startDate, setStartDate] = useState(""); // Fecha de inicio para filtro
-  const [endDate, setEndDate] = useState(""); // Fecha de fin para filtro
-  const [keyword, setKeyword] = useState(""); // Palabra clave para búsqueda
 
   // Función asincrónica para obtener los datos de la API
   const fetchData = async () => {
@@ -34,18 +30,7 @@ const ListRegister = () => {
   // useEffect se ejecuta después del primer renderizado y cuando el componente se actualiza
   useEffect(() => {
     fetchData();// Ejecutamos la función para obtener los datos
-  }, []);
-
-  const handleFilterByDate = (start, end) => {
-    setStartDate(start);
-    setEndDate(end);
-    fetchData(start, end, keyword); // Filtrar por fecha
-  };
-
-  const handleFilterByKeyword = (searchTerm) => {
-    setKeyword(searchTerm);
-    fetchData(startDate, endDate, searchTerm); // Buscar por palabra clave
-  };
+  }, [[updateCount]]);
 
   // Calcula los índices de los registros a mostrar en la página actual
   const indexOfLastRecord = currentPage * recordsPerPage;
@@ -68,6 +53,18 @@ const ListRegister = () => {
       month: '2-digit', 
       year: 'numeric',
     });
+  };
+
+  // Función para filtrar por palabra clave
+  const handleKeywordFilter = (filteredData) => {
+    setRegistros(filteredData);
+    setCurrentPage(1); // Reiniciar la paginación
+  };
+
+  // Función para filtrar por fecha
+  const handleDateFilter = (filteredData) => {
+    setRegistros(filteredData);
+    setCurrentPage(1); // Reiniciar la paginación
   };
 
   // Manejar la selección de una fila y guardar sus datos
@@ -99,11 +96,11 @@ const handleCloseDelete = () => {
 
   return (
     
-    <div className="container-fluid ">
+    <div className="container-fluid mt-5 px-4">
       <h4 className='mb-3'>Registros</h4>
-      <div className="d-flex justify-content-evenly  mb-2">
-        <FilterByDate onFilter={handleFilterByDate} />
-        <FilterByKeyword onSearch={handleFilterByKeyword} />
+      <div className="d-flex justify-content-evenly  mb-4">
+        <FilterByDate onSearchDates={handleDateFilter} />
+        <FilterByKeyword onSearchKeyword={handleKeywordFilter} />
       </div>
       <div className="table-responsive text-center">
         <Table striped bordered hover className="table-sm">
@@ -125,9 +122,9 @@ const handleCloseDelete = () => {
         <tbody>
           {currentRecords.map((registro, index) => (
             <tr key={index}
-            onClick={() => handleRowClick(registro)} // Guarda los datos de la fila al hacer clic
+            onClick={() => handleRowClick(registro.id_libro_diario)} // Guarda los datos de la fila al hacer clic
             style={{ cursor: 'pointer' }}
-            className={selectedRowData === registro ? "table-primary" : ""}
+            className={selectedRowData === registro.id_libro_diario ? "table-primary" : ""}
             >
               <td>{formatDate(registro.fecha_registro)}</td>
               <td>{registro.grupo}</td>
@@ -166,7 +163,7 @@ const handleCloseDelete = () => {
             disabled={currentPage === totalPages} 
           />
         </Pagination>
-        <div style={{ display: 'flex', justifyContent: 'space-between' , marginBottom: '20px' }}>
+        <div class="d-flex justify-content-between mb-4">
           <Button
             variant="secondary" 
             onClick={() => handleDeleteClick()} 
@@ -184,11 +181,9 @@ const handleCloseDelete = () => {
               onClose={handleCloseDelete} // Pasa la función handleCloseDelete como prop para cerrar el modal de eliminación
           />
       )}
-      <CreateRegister/>
  
     </div>
-
-
+    
   );
 };
 
