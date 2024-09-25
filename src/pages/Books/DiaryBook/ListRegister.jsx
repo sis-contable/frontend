@@ -9,11 +9,15 @@ import FilterByKeyword from "./FilterByKeyword";
 const ListRegister = ({ updateCount }) => {
 
   const [registros, setRegistros] = useState([]);  // Estado para almacenar los registros
+  const [registrosByDate, setRegistrosByDate] = useState([]);  // Estado para almacenar los registros por fechas
+  const [registrosByWord, setRegistrosByWord] = useState([]);  // Estado para almacenar los registros por palabra
   const [selectedRegisterID, setSelectedRegisterID] = useState(null); // Estado para almacenar el ID del registro seleccionado para eliminar
   const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para controlar la visibilidad del modal de eliminacion
   const [selectedRowData, setSelectedRowData] = useState(null); // Estado para los datos de la fila seleccionada
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5; // Define el número de registros por página
+
+
 
   // Función asincrónica para obtener los datos de la API
   const fetchData = async () => {
@@ -32,13 +36,31 @@ const ListRegister = ({ updateCount }) => {
     fetchData();// Ejecutamos la función para obtener los datos
   }, [[updateCount]]);
 
+  const applyFilters = () => {
+    let filteredRecords = registros;
+
+    // Aplicar el filtro por palabra clave, si existe
+    if (registrosByWord && registrosByWord.length > 0) {
+      filteredRecords = registrosByWord;
+    }
+
+    // Aplicar el filtro por fechas, si existe
+    if (registrosByDate && registrosByDate.length > 0) {
+      filteredRecords = registrosByDate;
+    }
+    return filteredRecords;
+  }
+
+  //Obtenemos el tipo de registros que vamos a mostrar
+  const registrosToShow = applyFilters();
+
   // Calcula los índices de los registros a mostrar en la página actual
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = registros.slice(indexOfFirstRecord, indexOfLastRecord);
+  const currentRecords = registrosToShow.slice(indexOfFirstRecord, indexOfLastRecord);
 
   // Calcula el número total de páginas
-  const totalPages = Math.ceil(registros.length / recordsPerPage);
+  const totalPages = Math.ceil(registrosToShow.length / recordsPerPage);
 
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
@@ -57,20 +79,22 @@ const ListRegister = ({ updateCount }) => {
 
   // Función para filtrar por palabra clave
   const handleKeywordFilter = (filteredData) => {
-    setRegistros(filteredData);
+    if (filteredData && filteredData.length > 0) { 
+      // Si hay datos filtrados, los asigna al estado
+      setRegistrosByWord(filteredData);
+    }
     setCurrentPage(1); // Reiniciar la paginación
   };
 
   // Función para filtrar por fecha
   const handleDateFilter = (filteredData) => {
-    setRegistros(filteredData);
+    setRegistrosByDate(filteredData);
     setCurrentPage(1); // Reiniciar la paginación
   };
 
   // Manejar la selección de una fila y guardar sus datos
   const handleRowClick = (registro) => {
     setSelectedRowData(registro); // Guarda los datos de la fila seleccionada
-    console.log("Datos de la fila seleccionada:", registro); // Muestra los datos en la consola
   };
   
   // Función para manejar el clic en el botón de eliminar

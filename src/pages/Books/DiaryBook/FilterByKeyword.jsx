@@ -11,13 +11,13 @@ const SearchByKeyword = ({ onSearchKeyword }) => {
       return;
     }
     setLoading(true); // Iniciar el estado de carga
-    console.log(keyword);
+  
     const result = await getListRegisterByWordService(keyword); // Llamar al servicio
 
     if (result.error) {
       alert('Error al filtrar los registros');
     } else if (onSearchKeyword) {
-      onSearchKeyword(result); // Enviar los datos filtrados al componente padre
+      onSearchKeyword(result[0]); // Enviar los datos filtrados al componente padre
     }
     setLoading(false); // Terminar el estado de carga
   };

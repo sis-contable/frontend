@@ -13,7 +13,7 @@ const SearchByDate = ({ onSearchDates }) => {
     if (result.error) {
       alert('Error al filtrar los registros');
     } else if (onSearchDates) {
-      onSearchDates(result); // Enviar los datos filtrados al componente padre
+      onSearchDates(result[0]); // Enviar los datos filtrados al componente padre
     }
     setLoading(false); // Terminar el estado de carga
   };

@@ -1,14 +1,12 @@
 // Servicio para obtener rubros basado en grupo y tipo
 const getListRegisterByWordService = async (keyword) => {
     try {
-        console.log(keyword);
         const response = await fetch(`http://localhost:3000/LookForBookDiaryWord/${keyword}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
         });
-        console.log(keyword);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
