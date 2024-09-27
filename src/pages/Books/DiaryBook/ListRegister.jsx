@@ -120,7 +120,7 @@ const handleCloseDelete = () => {
 
   return (
     
-    <div className="container-fluid mt-4 px-4">
+    <div className="container-fluid mt-5 px-4">
       <h4 className='mb-3'>Registros</h4>
       <div className="mt-4 mb-4">
         <FilterByDataAndWord 
@@ -189,7 +189,7 @@ const handleCloseDelete = () => {
             disabled={currentPage === totalPages} 
           />
         </Pagination>
-        <div style={{ display: 'flex', justifyContent: 'space-between' , marginBottom: '20px' }}>
+        <div class="d-flex justify-content-between mb-4">
           <Button
             variant="secondary" 
             onClick={() => handleDeleteClick()} 
@@ -210,8 +210,6 @@ const handleCloseDelete = () => {
  
     </div>
     
-
-
   );
 };
 
