@@ -3,8 +3,8 @@ import { Table, Pagination, Button } from "react-bootstrap";
 import { BsCheckLg } from "react-icons/bs"; // Ícono de tilde grande
 import listRegisterService from "../../../services/booksService/diaryBookService/listRegisterService";
 import DeleteRegister from "./DeleteRegister";
-import FilterByDate from "./FilterByDate";
-import FilterByKeyword from "./FilterByKeyword";
+import FilterByDataAndWord from "./FilterByDataAndWord";
+
 
 const ListRegister = ({ updateCount }) => {
 
@@ -122,9 +122,11 @@ const handleCloseDelete = () => {
     
     <div className="container-fluid mt-4 px-4">
       <h4 className='mb-3'>Registros</h4>
-      <div className="d-flex justify-content-evenly mt-4 mb-4 align-items-center">
-        <FilterByDate onSearchDates={handleDateFilter} />
-        <FilterByKeyword onSearchKeyword={handleKeywordFilter} />
+      <div className="mt-4 mb-4">
+        <FilterByDataAndWord 
+          onSearchDates={handleDateFilter}
+          onSearchKeyword={handleKeywordFilter}  
+        />
       </div>
       <div className="table-responsive text-center">
         <Table striped bordered hover className="table-sm">
