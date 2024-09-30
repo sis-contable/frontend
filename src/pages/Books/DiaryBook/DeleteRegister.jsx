@@ -1,21 +1,20 @@
-import { Modal, Button } from 'react-bootstrap';
+import { useState } from 'react';
+import { Modal, Button, Alert } from 'react-bootstrap';
 import deleteRegisterService from '../../../services/booksService/diaryBookService/deleteRegisterService';
 
 
 const DeleteRegister = ({ registerID, onClose, onDelete}) => {
+    const [showSuccess, setShowSuccess] = useState(false); // Estado para manejar el mensaje de cambios guardados
     
     // Función que maneja la eliminación del registro
     const handleDeleteRegister = async () => {
-        const [showSuccess, setShowSuccess] = useState(false); // Estado para manejar el mensaje de cambios guardados
         // Si registerID no está definido, muestra un error en la consola y retorna
         if (!registerID) {
             console.error('El ID del registro no está definido.');
             return;
         }
-
         try {
-            const id_registro = registerID.id_libro_diario;
-            const deleteUser = await deleteRegisterService(id_registro); // Llama al servicio para eliminar el registro y espera la respuesta
+            const deleteUser = await deleteRegisterService(registerID); // Llama al servicio para eliminar el registro y espera la respuesta
             if (deleteUser) {
                 setShowSuccess(true); // Muestra la alerta
                 setTimeout(() => {

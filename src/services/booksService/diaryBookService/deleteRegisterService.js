@@ -1,4 +1,4 @@
-const deleteRegisterService = async (registrerID) => {
+const deleteRegisterService = async (registerID) => {
     try {
 
         console.log('ID del registro:', registerID); 
@@ -8,6 +8,7 @@ const deleteRegisterService = async (registrerID) => {
                 'Content-Type': 'application/json',
             }
         });
+        console.log("ID N", registerID)
         if (response.ok) {
             console.log('Registro eliminado con éxito');
             return registerID;
