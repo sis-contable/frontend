@@ -6,7 +6,7 @@ const DeleteRegister = ({ registerID, onClose, onDelete}) => {
     
     // Función que maneja la eliminación del registro
     const handleDeleteRegister = async () => {
-
+        const [showSuccess, setShowSuccess] = useState(false); // Estado para manejar el mensaje de cambios guardados
         // Si registerID no está definido, muestra un error en la consola y retorna
         if (!registerID) {
             console.error('El ID del registro no está definido.');
@@ -14,9 +14,17 @@ const DeleteRegister = ({ registerID, onClose, onDelete}) => {
         }
 
         try {
-            const deleteUser = await deleteRegisterService(registerID); // Llama al servicio para eliminar el registro y espera la respuesta
-            onDelete(); // Llama a onDelete después de la eliminación
-            onClose(); // Cierra el modal
+            const id_registro = registerID.id_libro_diario;
+            const deleteUser = await deleteRegisterService(id_registro); // Llama al servicio para eliminar el registro y espera la respuesta
+            if (deleteUser) {
+                setShowSuccess(true); // Muestra la alerta
+                setTimeout(() => {
+                    setShowSuccess(false); // Oculta la alerta después de 2 segundos
+                    onDelete(deleteUser); // Llama a onDelete después de la eliminación
+                    onClose(); // Cierra el modal
+                },700); 
+            }
+            
         } catch (error) {
             console.error('Error al eliminar registro:', error);
         }
@@ -28,6 +36,12 @@ const DeleteRegister = ({ registerID, onClose, onDelete}) => {
                 <Modal.Title>Eliminar Registro</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {/* Mostrar la alerta si showSuccess es true */}
+                {showSuccess && (
+                    <Alert variant="success" className="custom-alert">
+                       Registro eliminado con exito.
+                    </Alert>
+                )}
                 <p>
                     ¿Estas seguro de eliminar este Registro?
                 </p>

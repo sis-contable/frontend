@@ -1,4 +1,4 @@
-const deleteRegisterService = async (registerID) => {
+const deleteRegisterService = async (registrerID) => {
     try {
 
         console.log('ID del registro:', registerID); 

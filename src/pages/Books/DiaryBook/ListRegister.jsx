@@ -119,9 +119,9 @@ const handleCloseDelete = () => {
 
   return (
     
-    <div className="container-fluid mt-4 px-4">
+    <div className="container-fluid mt-5 px-4">
       <h4 className='mb-3'>Registros</h4>
-      <div className="d-flex justify-content-center mt-4 mb-4 align-items-center">
+      <div className="mt-4 mb-4">
         <FilterByDataAndWord 
           onSearchDates={handleDateFilter}
           onSearchKeyword={handleKeywordFilter}  
@@ -209,8 +209,6 @@ const handleCloseDelete = () => {
  
     </div>
     
-
-
   );
 };
 
