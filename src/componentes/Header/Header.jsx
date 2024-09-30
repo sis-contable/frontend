@@ -29,10 +29,10 @@ const Header = ({setLoginSuccessful}) => {
         <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
           <div className="navbar-nav"> 
             {/* Enlaces de navegación */}
-            <Link className="nav-link active" to="/home">Home</Link>
-            <Link className="nav-link" to="/">Caja</Link>
-            <Link className="nav-link" to="/ListUsers">Usuarios</Link>
+            <Link className="nav-link active" to="/home">Inicio</Link>
             <Link className="nav-link" to="/DiaryBook">Libros</Link> 
+            <Link className="nav-link" to="/AccountPlan">Cuentas</Link>
+            <Link className="nav-link" to="/ListUsers">Usuarios</Link>
           </div>
           
           <div className='d-flex     justify-content-center'> {/* Contenedor para el enlace de Logout */}

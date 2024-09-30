@@ -4,6 +4,7 @@ import Header from './componentes/Header/Header'; // Importa el componente Heade
 import Home from './pages/Home/Home'; // Importa el componente Home (suponiendo que tienes este componente)
 import ListUsers from './pages/Users/ListUsers'; // Importa el componente ListUsers
 import DiaryBook from './pages/Books/DiaryBook/DiaryBook'
+import AccountPlan from './pages/AccountPlan/ListAccountPlan'
 import Login from './pages/Login/Login';
 import React, { useState } from 'react';
 
@@ -17,8 +18,9 @@ const App = () => {
         <Route path="/" element={loginSuccessful ? <Home /> : <Navigate to="/login" />} />
         <Route path="/login" element={!loginSuccessful ? <Login setLoginSuccessful={setLoginSuccessful} /> : <Navigate to="/" />} />
           <Route path='/home' element={<Home />} /> {/* Ruta para la página Home */}
-          <Route path='/ListUsers' element={<ListUsers />} /> {/* Ruta para la página ListUsers */}
           <Route path='/DiaryBook' element={<DiaryBook />} /> {/* Ruta para la página ListRegister */}
+          <Route path='/AccountPlan' element={<AccountPlan />} /> {/* Ruta para la página ListRegister */}
+          <Route path='/ListUsers' element={<ListUsers />} /> {/* Ruta para la página ListUsers */}
         </Routes>
       </Router>
     </div>
