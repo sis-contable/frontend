@@ -2,17 +2,14 @@ import React, { useState , useEffect } from "react";
 import { Table, Pagination, Button } from "react-bootstrap";
 import { BsCheckLg } from "react-icons/bs"; // Ícono de tilde grande
 import listRegisterService from "../../../services/booksService/diaryBookService/listRegisterService";
-import DeleteRegister from "./DeleteRegister";
 import FilterByDataAndWord from "./FilterByDataAndWord";
+import ReactHtmlTableExcel from 'react-html-table-to-excel';
 
 const ListRegister = ({ updateCount }) => {
 
   const [registros, setRegistros] = useState([]);  // Estado para almacenar los registros
   const [registrosByDate, setRegistrosByDate] = useState([]);  // Estado para almacenar los registros por fechas
   const [registrosByWord, setRegistrosByWord] = useState([]);  // Estado para almacenar los registros por palabra
-  const [selectedRegisterID, setSelectedRegisterID] = useState(null); // Estado para almacenar el ID del registro seleccionado para eliminar
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para controlar la visibilidad del modal de eliminacion
-  const [selectedRowData, setSelectedRowData] = useState(null); // Estado para los datos de la fila seleccionada
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5; // Define el número de registros por página
 
@@ -91,36 +88,10 @@ const ListRegister = ({ updateCount }) => {
     setCurrentPage(1); // Reiniciar la paginación
   };
 
-  // Manejar la selección de una fila y guardar sus datos
-  const handleRowClick = (registro) => {
-    setSelectedRowData(registro); // Guarda los datos de la fila seleccionada
-  };
-  
-  // Función para manejar el clic en el botón de eliminar
-  const handleDeleteClick = () => {
-    if (selectedRowData) {
-      setSelectedRegisterID(selectedRowData); // Usa el ID del registro seleccionado
-      setShowDeleteModal(true); // Muestra el modal de confirmación
-    }
-  };
-
-  // Función para manejar la eliminacion del registro 
-  const handleDelete = () => {
-    fetchData(); // Actualiza la lista de registros
-    setShowDeleteModal(false); // Cierra el modal
-    setSelectedRegisterID(null); // Limpia el ID del registro seleccionado
-};
-
-// Función para cerrar el modal de eliminacion
-const handleCloseDelete = () => {
-  setShowDeleteModal(false); // Cierra el modal
-  setSelectedRegisterID(null); // Limpia el ID del registro seleccionado
-};
-
   return (
     
     <div className="container-fluid mt-5 px-4">
-      <h4 className='mb-3'>Registros</h4>
+      <h4 className='mb-3 mx-4'>Libro Diario</h4>
       <div className="mt-4 mb-4">
         <FilterByDataAndWord 
           onSearchDates={handleDateFilter}
@@ -128,7 +99,7 @@ const handleCloseDelete = () => {
         />
       </div>
       <div className="table-responsive text-center">
-        <Table striped bordered hover className="table-sm">
+        <Table striped bordered hover className="table-sm" id="tablaLibroDiario">
         <thead>
           <tr>
             <th>Fecha</th>
@@ -146,11 +117,7 @@ const handleCloseDelete = () => {
         </thead>
         <tbody>
           {currentRecords.map((registro, index) => (
-            <tr key={index}
-            onClick={() => handleRowClick(registro.id_libro_diario)} // Guarda los datos de la fila al hacer clic
-            style={{ cursor: 'pointer' }}
-            className={selectedRowData === registro.id_libro_diario ? "table-primary" : ""}
-            >
+            <tr key={index} className={registro.id_libro_diario}>
               <td>{formatDate(registro.fecha_registro)}</td>
               <td>{registro.grupo}</td>
               <td>{registro.tipo}</td>
@@ -169,6 +136,45 @@ const handleCloseDelete = () => {
         </tbody>
       </Table>
       </div>
+
+       {/* Tabla invisible para exportar */}
+       <div className="d-none">
+        <Table id="tablaCompletaLibroDiario">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Grupo</th>
+              <th>Tipo</th>
+              <th>Rubro</th>
+              <th>Subrubro</th>
+              <th>Forma de pago</th>
+              <th>Cuenta</th>
+              <th>Descripción</th>
+              <th>Debe</th>
+              <th>Haber</th>
+              <th>Gestión</th>
+            </tr>
+          </thead>
+          <tbody>
+            {registrosToShow.map((registro, index) => (
+              <tr key={index}>
+                <td>{formatDate(registro.fecha_registro)}</td>
+                <td>{registro.grupo}</td>
+                <td>{registro.tipo}</td>
+                <td>{registro.rubro}</td>
+                <td>{registro.sub_rubro}</td>
+                <td>{registro.forma_pago}</td>
+                <td>{registro.cuenta}</td>
+                <td>{registro.descripcion}</td>
+                <td>{registro.debe}</td>
+                <td>{registro.haber}</td>
+                <td>{registro.gestion === 1 ? "Sí" : "No"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+
       <div className="d-flex justify-content-evenly mt-4">
         <Pagination className="">
           <Pagination.Prev 
@@ -189,24 +195,16 @@ const handleCloseDelete = () => {
           />
         </Pagination>
         <div className="d-flex justify-content-between mb-2">
-          <Button
-            variant="secondary" 
-            onClick={() => handleDeleteClick()} 
-            disabled={!selectedRowData}
-          >
-            Eliminar
-          </Button>
+          <ReactHtmlTableExcel
+            id="ExportarExcel"
+            className ="btn btn-success btn-sm"
+            table="tablaCompletaLibroDiario" //Lo linkeamos a la table
+            filename="sisContable_Libros"
+            sheet="libro_diario"
+            buttonText= "Exportar Excel"
+          />
         </div>
       </div>
-      
-      {selectedRegisterID !== null && (   // Si hay un ID de registro seleccionado (no es null), muestra el componente DeleteRegister
-          <DeleteRegister
-              registerID={selectedRegisterID} // Pasa el ID del registro seleccionado como prop
-              onDelete={handleDelete} // Pasa la función handleDelete como prop para manejar la eliminación
-              onClose={handleCloseDelete} // Pasa la función handleCloseDelete como prop para cerrar el modal de eliminación
-          />
-      )}
- 
     </div>
     
   );

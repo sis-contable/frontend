@@ -1,8 +1,8 @@
 import React, { useState , useEffect } from "react";
-import { Table, Pagination } from "react-bootstrap";
+import { Table, Pagination , Button } from "react-bootstrap";
 import listAccountPlanServis from "../../services/accountPlan/listAccountPlanService"
 import FilterByWord from "./FilterByWord";
-
+import { useNavigate } from 'react-router-dom'; // Importa el hook
 
 const AccountPlan = ({updateCount}) => {
 
@@ -10,7 +10,7 @@ const AccountPlan = ({updateCount}) => {
     const [accountPlanByWord , setAccountPlanByWord] = useState([]);
     const [selectedRowData, setSelectedRowData] = useState(null); // Estado para los datos de la fila seleccionada
     const [currentPage, setCurrentPage] = useState(1);
-    const recordsPerPage = 5; // Define el número de registros por página
+    const recordsPerPage = 8; // Define el número de registros por página
 
     // Función asincrónica para obtener los datos de la API
   const fetchData = async () => {
@@ -76,6 +76,22 @@ const AccountPlan = ({updateCount}) => {
     });
   };
 
+  // Manejar la selección de una fila y guardar sus datos
+  const handleRowClick = (id_cuenta) => {
+    setSelectedRowData(id_cuenta); // Guarda los datos de la fila seleccionada
+  };
+
+  const navigate = useNavigate(); // Hook para manejar la navegación
+  
+  // Función para manejar el clic en el botón Ver Libro diario
+  const handleLibroClick = () => {
+    if (selectedRowData) {
+      // Construir la URL y navegar a la ruta del libro mayor
+      const url = `/libro-mayor/${selectedRowData}`;
+      navigate(url); // Usa navigate para redirigir dentro de la aplicación sin recargar
+    }
+  };
+
   return (
     <div className="container-fluid mt-4 px-4">
       <h4 className="mt-5 mx-4">Plan de Cuentas</h4>
@@ -101,6 +117,7 @@ const AccountPlan = ({updateCount}) => {
           {currentRecords.map((listAccount, index) => (
             <tr key={index}
             style={{ cursor: 'pointer' }}
+            onClick={() => handleRowClick(listAccount.codigo_cuenta)}
             className={selectedRowData === listAccount.codigo_cuenta ? "table-primary" : ""}
             >
               <td>{listAccount.codigo_cuenta}</td>
@@ -134,6 +151,15 @@ const AccountPlan = ({updateCount}) => {
             disabled={currentPage === totalPages} 
           />
         </Pagination>
+        <div className="d-flex justify-content-between mb-2">
+          <Button className="btn btn-sm"
+            variant="secondary" 
+            onClick={() => handleLibroClick()} 
+            disabled={!selectedRowData}
+          >
+            Ver Libro Mayor
+          </Button>
+        </div>
       </div>
     </div>
   );

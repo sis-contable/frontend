@@ -17,8 +17,8 @@ const Header = ({setLoginSuccessful}) => {
     <Nav className="navbar navbar-expand-lg navbar-dark bg-dark"> {/* Navbar con clases de Bootstrap para estilo y comportamiento */}
       <div className="container-fluid text-center"> 
         {/* Enlace al inicio con el logo */}
-        <Link className="navbar-brand ml-2" to="/"> 
-          <img src="..\src\assets\img\logo.png" alt="" width="100" height="40px" className="img-fluid" /> {/* Logo dentro del enlace */}
+        <Link className="navbar-brand" to="/"> 
+          <img src="..\src\assets\img\logo.png" alt="" width="100" height="40px" className="img-fluid mx-2" /> {/* Logo dentro del enlace */}
         </Link>
         
         {/* Botón para el menú desplegable en movile */}
