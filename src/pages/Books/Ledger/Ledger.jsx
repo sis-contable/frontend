@@ -1,26 +1,27 @@
 import React, { useState , useEffect } from "react";
-import { Table, Pagination, Button } from "react-bootstrap";
-import { BsCheckLg } from "react-icons/bs"; // Ícono de tilde grande
-import listRegisterService from "../../../services/booksService/diaryBookService/listRegisterService";
+import { Table, Pagination } from "react-bootstrap";
+import listLedgerService from "../../../services/booksService/ledgerBookService/listLedgerService";
 import FilterByDataAndWord from "./FilterByDataAndWord";
 import ReactHtmlTableExcel from 'react-html-table-to-excel';
+import { useParams } from 'react-router-dom';
 
-const ListRegister = ({ updateCount }) => {
+const Ledger = ({ updateCount }) => {
 
+  const { id_cuenta } = useParams();//Obtenemos el codigo de cuenta desde la url
   const [registros, setRegistros] = useState([]);  // Estado para almacenar los registros
   const [registrosByDate, setRegistrosByDate] = useState([]);  // Estado para almacenar los registros por fechas
   const [registrosByWord, setRegistrosByWord] = useState([]);  // Estado para almacenar los registros por palabra
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5; // Define el número de registros por página
-
-
+  const [nombreCuenta , setNombreCuenta ] = useState();
 
   // Función asincrónica para obtener los datos de la API
   const fetchData = async () => {
     try {
-        // Llamamos a la función del servicio para obtener la lista de registros
-        const result = await listRegisterService();
+        // Llamamos a la función del servicio para obtener la lista de registros del libro mayor de esa cuenta
+        const result = await listLedgerService(id_cuenta);
         // Actualizamos el estado 'registers' con los datos obtenidos
+        setNombreCuenta(result[0].sub_rubro);
         setRegistros(result[0]); // Establecer solo el primer elemento que contiene los registros
     } catch (error) {
         console.error('Error fetching users:', error);// Si ocurre un error, lo mostramos en la consola
@@ -91,46 +92,40 @@ const ListRegister = ({ updateCount }) => {
   return (
     
     <div className="container-fluid mt-5 px-4">
-      <h4 className='mb-3 mx-4'>Libro Diario</h4>
+      <h4 className='mb-3 mx-4'>Libro Mayor</h4>
       <div className="mt-4 mb-4">
         <FilterByDataAndWord 
           onSearchDates={handleDateFilter}
           onSearchKeyword={handleKeywordFilter}  
         />
       </div>
+      <h5 className='mb-3 mx-4'>Cuenta: { nombreCuenta }</h5>
       <div className="table-responsive text-center">
         <Table striped bordered hover className="table-sm">
         <thead>
           <tr>
+            <th>Asiento N°</th>
             <th>Fecha</th>
-            <th>Grupo</th>
-            <th>Tipo</th>
-            <th>Rubro</th>
-            <th>Subrubro</th>
-            <th className="mw-150 text-truncate">Forma de pago</th>
-            <th>Cuenta</th>
-            <th>Descripción</th>
+            <th>Codigo</th>
+            <th>Detalle</th>
             <th>Debe</th>
             <th>Haber</th>
-            <th>Gestión</th>
+            <th>S.Deudor</th>
+            <th>S.Acredor</th>
           </tr>
         </thead>
         <tbody>
           {currentRecords.map((registro, index) => (
             <tr key={index} className={registro.id_libro_diario}>
               <td>{formatDate(registro.fecha_registro)}</td>
-              <td>{registro.grupo}</td>
-              <td>{registro.tipo}</td>
-              <td>{registro.rubro}</td>
-              <td>{registro.sub_rubro}</td>
-              <td>{registro.forma_pago}</td>
-              <td>{registro.cuenta}</td>
-              <td>{registro.descripcion}</td>
+              <td>{registro.asiento}</td>
+              <td>{registro.fecha}</td>
+              <td>{registro.codigo_cuenta}</td>
+              <td>{registro.detalle}</td>
               <td>{registro.debe}</td>
               <td>{registro.haber}</td>
-              <td className="ta-center">
-                {registro.gestion === 1 ? <BsCheckLg size={24} /> : null}
-              </td>
+              <td>{registro.s_deudor}</td>
+              <td>{registro.s_acredor}</td>
             </tr>
           ))}
         </tbody>
@@ -139,36 +134,31 @@ const ListRegister = ({ updateCount }) => {
 
        {/* Tabla invisible para exportar */}
        <div className="d-none">
-        <Table id="tablaCompletaLibroDiario">
+        <Table id="tablaCompletaLibroMayor">
           <thead>
             <tr>
-              <th>Fecha</th>
-              <th>Grupo</th>
-              <th>Tipo</th>
-              <th>Rubro</th>
-              <th>Subrubro</th>
-              <th>Forma de pago</th>
-              <th>Cuenta</th>
-              <th>Descripción</th>
-              <th>Debe</th>
-              <th>Haber</th>
-              <th>Gestión</th>
+                <th>Asiento N°</th>
+                <th>Fecha</th>
+                <th>Codigo</th>
+                <th>Detalle</th>
+                <th>Debe</th>
+                <th>Haber</th>
+                <th>S.Deudor</th>
+                <th>S.Acredor</th>
             </tr>
           </thead>
           <tbody>
             {registrosToShow.map((registro, index) => (
-              <tr key={index}>
+              <tr key={index} className={registro.id_libro_diario}>
                 <td>{formatDate(registro.fecha_registro)}</td>
-                <td>{registro.grupo}</td>
-                <td>{registro.tipo}</td>
-                <td>{registro.rubro}</td>
-                <td>{registro.sub_rubro}</td>
-                <td>{registro.forma_pago}</td>
-                <td>{registro.cuenta}</td>
-                <td>{registro.descripcion}</td>
+                <td>{registro.asiento}</td>
+                <td>{registro.fecha}</td>
+                <td>{registro.codigo_cuenta2}</td>
+                <td>{registro.detalle}</td>
                 <td>{registro.debe}</td>
                 <td>{registro.haber}</td>
-                <td>{registro.gestion === 1 ? "Sí" : "No"}</td>
+                <td>{registro.s_deudor}</td>
+                <td>{registro.s_acredor}</td>
               </tr>
             ))}
           </tbody>
@@ -198,9 +188,9 @@ const ListRegister = ({ updateCount }) => {
           <ReactHtmlTableExcel
             id="ExportarExcel"
             className ="btn btn-success btn-sm"
-            table="tablaCompletaLibroDiario" //Lo linkeamos a la table
+            table="tablaCompletaLibroMayor" //Lo linkeamos a la table
             filename="sisContable_Libros"
-            sheet="libro_diario"
+            sheet="libro_mayor"
             buttonText= "Exportar Excel"
           />
         </div>
@@ -210,4 +200,4 @@ const ListRegister = ({ updateCount }) => {
   );
 };
 
-export default ListRegister;
+export default Ledger;

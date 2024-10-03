@@ -87,7 +87,7 @@ const AccountPlan = ({updateCount}) => {
   const handleLibroClick = () => {
     if (selectedRowData) {
       // Construir la URL y navegar a la ruta del libro mayor
-      const url = `/libro-mayor/${selectedRowData}`;
+      const url = `/libro_mayor/${selectedRowData}`;
       navigate(url); // Usa navigate para redirigir dentro de la aplicación sin recargar
     }
   };
