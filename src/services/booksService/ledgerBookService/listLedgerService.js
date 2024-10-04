@@ -2,15 +2,17 @@
 const listLedgerterService = async (codigo_cuenta) => {
     try {
       // Enviamos una solicitud GET al servidor para obtener la lista de usuarios
-      const responseRegister = await fetch(`http://localhost:3000/listLedgerDiary/${codigo_cuenta}`, {
+      const responseRegister = await fetch(`http://localhost:3000/getLedger/${codigo_cuenta}`, {
         method: 'GET', // Método HTTP
         headers: {
           'Content-Type': 'application/json', // Especificamos el tipo de contenido como JSON
         },
       });
+      
       // Convertimos la respuesta del servidor a un objeto js
       const result = await responseRegister.json();
       // Devolvemos el resultado para que pueda ser manejado en la lista
+
       return result;
     } catch (error) {
       // Si ocurre un error, lo imprimimos en la consola y lanzamos una excepción

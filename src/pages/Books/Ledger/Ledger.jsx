@@ -13,16 +13,17 @@ const Ledger = ({ updateCount }) => {
   const [registrosByWord, setRegistrosByWord] = useState([]);  // Estado para almacenar los registros por palabra
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5; // Define el número de registros por página
-  const [nombreCuenta , setNombreCuenta ] = useState();
+  const [nombreCuenta, setNombreCuenta] = useState('');
 
   // Función asincrónica para obtener los datos de la API
   const fetchData = async () => {
     try {
+
         // Llamamos a la función del servicio para obtener la lista de registros del libro mayor de esa cuenta
         const result = await listLedgerService(id_cuenta);
         // Actualizamos el estado 'registers' con los datos obtenidos
-        setNombreCuenta(result[0].sub_rubro);
         setRegistros(result[0]); // Establecer solo el primer elemento que contiene los registros
+        setNombreCuenta(result[0][0].sub_rubro);
     } catch (error) {
         console.error('Error fetching users:', error);// Si ocurre un error, lo mostramos en la consola
     }
@@ -31,7 +32,7 @@ const Ledger = ({ updateCount }) => {
   // useEffect se ejecuta después del primer renderizado y cuando el componente se actualiza
   useEffect(() => {
     fetchData();// Ejecutamos la función para obtener los datos
-  }, [[updateCount]]);
+  }, [id_cuenta , updateCount]);
 
   const applyFilters = () => {
     let filteredRecords = registros;
@@ -95,6 +96,7 @@ const Ledger = ({ updateCount }) => {
       <h4 className='mb-3 mx-4'>Libro Mayor</h4>
       <div className="mt-4 mb-4">
         <FilterByDataAndWord 
+          id_cuenta={id_cuenta}
           onSearchDates={handleDateFilter}
           onSearchKeyword={handleKeywordFilter}  
         />
@@ -112,20 +114,21 @@ const Ledger = ({ updateCount }) => {
             <th>Haber</th>
             <th>S.Deudor</th>
             <th>S.Acredor</th>
+            <th>S.Acumulado</th>
           </tr>
         </thead>
         <tbody>
           {currentRecords.map((registro, index) => (
             <tr key={index} className={registro.id_libro_diario}>
+              <td>{registro.id_libro_diario}</td>
               <td>{formatDate(registro.fecha_registro)}</td>
-              <td>{registro.asiento}</td>
-              <td>{registro.fecha}</td>
-              <td>{registro.codigo_cuenta}</td>
-              <td>{registro.detalle}</td>
+              <td>{id_cuenta}</td>
+              <td>{registro.cuenta}</td>
               <td>{registro.debe}</td>
               <td>{registro.haber}</td>
-              <td>{registro.s_deudor}</td>
-              <td>{registro.s_acredor}</td>
+              <td>{registro.saldo_deudor}</td>
+              <td>{registro.saldo_acreedor}</td>
+              <td>{registro.saldo_acumulado}</td>
             </tr>
           ))}
         </tbody>
@@ -145,20 +148,21 @@ const Ledger = ({ updateCount }) => {
                 <th>Haber</th>
                 <th>S.Deudor</th>
                 <th>S.Acredor</th>
+                <th>S.Acumulado</th>
             </tr>
           </thead>
           <tbody>
             {registrosToShow.map((registro, index) => (
               <tr key={index} className={registro.id_libro_diario}>
+                <td>{registro.id_libro_diario}</td>
                 <td>{formatDate(registro.fecha_registro)}</td>
-                <td>{registro.asiento}</td>
                 <td>{registro.fecha}</td>
                 <td>{registro.codigo_cuenta2}</td>
                 <td>{registro.detalle}</td>
                 <td>{registro.debe}</td>
                 <td>{registro.haber}</td>
-                <td>{registro.s_deudor}</td>
-                <td>{registro.s_acredor}</td>
+                <td>{registro.saldo_acreedor}</td>
+                <td>{registro.saldo_acumulado}</td>
               </tr>
             ))}
           </tbody>

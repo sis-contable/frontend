@@ -6,6 +6,7 @@ import ListUsers from './pages/Users/ListUsers'; // Importa el componente ListUs
 import DiaryBook from './pages/Books/DiaryBook/DiaryBook'
 import AccountPlan from './pages/AccountPlan/ListAccountPlan'
 import Login from './pages/Login/Login';
+import Ledger from './pages/Books/Ledger/Ledger'
 import React, { useState } from 'react';
 
 const App = () => {
@@ -21,7 +22,7 @@ const App = () => {
           <Route path='/DiaryBook' element={<DiaryBook />} /> {/* Ruta para la página ListRegister */}
           <Route path='/AccountPlan' element={<AccountPlan />} /> {/* Ruta para la página ListRegister */}
           <Route path='/ListUsers' element={<ListUsers />} /> {/* Ruta para la página ListUsers */}
-          <Route path="/libro_mayor/:codigo_cuenta" element={<Ledger />} />
+          <Route path="/libro_mayor/:id_cuenta" element={<Ledger />} />
         </Routes>
       </Router>
     </div>

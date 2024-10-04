@@ -4,7 +4,7 @@ import getListLedgerByWordService from "../../../services/booksService/ledgerBoo
 import getListLegerByDateService from "../../../services/booksService/ledgerBookService/listLedgerService";
 
 
-const FilterByDataAndWord = ({ onSearchDates, onSearchKeyword }) => {
+const FilterByDataAndWord = ({ onSearchDates, onSearchKeyword, id_cuenta }) => {
 
   const [fechaDesde , setFechaDesde] = useState('');
   const [fechaHasta , setFechaHasta] = useState('');
@@ -45,7 +45,7 @@ const FilterByDataAndWord = ({ onSearchDates, onSearchKeyword }) => {
 
   // Función para restablecer el filtro (mostrar todos los registros)
   const handleClearFilter = async () => {
-    const result = await getListLegerByDateService(codigo_cuenta); // Llama al servicio original para obtener todos los registros
+    const result = await getListLegerByDateService(id_cuenta); // Llama al servicio original para obtener todos los registros
     if (result.error) {
       alert('Error al cargar los registros');
     } else if (onSearchDates) {
