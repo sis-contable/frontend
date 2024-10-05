@@ -1,7 +1,7 @@
 // Servicio para obtener rubros basado en grupo y tipo
 const getListLedgerByWordService = async (keyword) => {
     try {
-        const response = await fetch(`http://localhost:3000/LookForBookLedgerWord/${keyword}`, {
+        const response = await fetch(`http://localhost:3000/lookForBookLedgerWord/${keyword}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
 import React, { useState , useEffect } from "react";
 import { Table, Pagination , Button } from "react-bootstrap";
 import listAccountPlanServis from "../../services/accountPlan/listAccountPlanService"
-import FilterByWord from "./FilterByWord";
+import FilterByWord from "../../componentes/AccountPlan/FilterByWord";
 import { useNavigate } from 'react-router-dom'; // Importa el hook
 
 const AccountPlan = ({updateCount}) => {

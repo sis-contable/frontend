@@ -1,7 +1,7 @@
 import React, { useState , useEffect } from "react";
 import { Table, Pagination } from "react-bootstrap";
 import listLedgerService from "../../../services/booksService/ledgerBookService/listLedgerService";
-import FilterByDataAndWord from "./FilterByDataAndWord";
+import FilterByDataAndWord from "../../../componentes/Books/Ledger/FilterByDataAndWord";
 import ReactHtmlTableExcel from 'react-html-table-to-excel';
 import { useParams } from 'react-router-dom';
 

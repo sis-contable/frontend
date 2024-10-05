@@ -6,7 +6,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Importamos la función de login desde el archivo loginService.js
-import loginService from '../../services/loginService';
+import loginService from '../../services/users/loginService.js';
 import App from '../../App.jsx';
 
 // Definimos un componente funcional llamado Login utilizando una arrow function

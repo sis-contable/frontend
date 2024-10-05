@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Header from './componentes/Header/Header'; // Importa el componente Header
 import Home from './pages/Home/Home'; // Importa el componente Home (suponiendo que tienes este componente)
 import ListUsers from './pages/Users/ListUsers'; // Importa el componente ListUsers
-import DiaryBook from './pages/Books/DiaryBook/DiaryBook'
+import ListRegister from './pages/Books/DiaryBook/ListRegister'
 import AccountPlan from './pages/AccountPlan/ListAccountPlan'
 import Login from './pages/Login/Login';
 import Ledger from './pages/Books/Ledger/Ledger'
@@ -18,10 +18,10 @@ const App = () => {
         <Routes> {/* Define las rutas de la aplicación */}
         <Route path="/" element={loginSuccessful ? <Home /> : <Navigate to="/login" />} />
         <Route path="/login" element={!loginSuccessful ? <Login setLoginSuccessful={setLoginSuccessful} /> : <Navigate to="/" />} />
-          <Route path='/home' element={<Home />} /> {/* Ruta para la página Home */}
-          <Route path='/DiaryBook' element={<DiaryBook />} /> {/* Ruta para la página ListRegister */}
-          <Route path='/AccountPlan' element={<AccountPlan />} /> {/* Ruta para la página ListRegister */}
-          <Route path='/ListUsers' element={<ListUsers />} /> {/* Ruta para la página ListUsers */}
+          <Route path='/inicio' element={<Home />} /> {/* Ruta para la página Home */}
+          <Route path='/libro_diario' element={<ListRegister />} /> {/* Ruta para la página ListRegister */}
+          <Route path='/plan_cuenta' element={<AccountPlan />} /> {/* Ruta para la página ListRegister */}
+          <Route path='/usuarios' element={<ListUsers />} /> {/* Ruta para la página ListUsers */}
           <Route path="/libro_mayor/:id_cuenta" element={<Ledger />} />
         </Routes>
       </Router>

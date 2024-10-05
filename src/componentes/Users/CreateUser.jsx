@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form , InputGroup , Alert} from 'react-bootstrap';
-import createUserService from '../../services/createUserService'
+import createUserService from '../../services/users/createUserService'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const CreateUser = ({ show, onClose, onCreate }) => {

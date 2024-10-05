@@ -2,7 +2,7 @@
 const getPaymentMethodsService = async () => {
     try {
       // Enviamos una solicitud GET al servidor para obtener la lista de formas de pago
-      const responseRegister = await fetch('http://localhost:3000/getPaymentMethods', {
+      const responseRegister = await fetch('http://localhost:3000/paymentMethods', {
         method: 'GET', // Método HTTP
         headers: {
           'Content-Type': 'application/json', // Especificamos el tipo de contenido como JSON

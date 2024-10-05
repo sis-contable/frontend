@@ -1,7 +1,7 @@
 // Servicio para obtener rubros basado en grupo y tipo
 const getRubroService = async (idGrupo, idTipo) => {
     try {
-        const response = await fetch(`http://localhost:3000/getRubro/${idGrupo}/${idTipo}`, {
+        const response = await fetch(`http://localhost:3000/rubro/${idGrupo}/${idTipo}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

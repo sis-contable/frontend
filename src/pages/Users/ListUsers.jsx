@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import getListUsersService from '../../services/getListUsersService';
-import EditUser from './EditUser';
-import DeleteUser from './DeleteUser';
-import CreateUser from './CreateUser';
+import getListUsersService from '../../services/users/getListUsersService';
+import EditUser from '../../componentes/Users/EditUser';
+import DeleteUser from '../../componentes/Users/DeleteUser';
+import CreateUser from '../../componentes/Users/CreateUser';
 
 // Componente funcional ListUsers
 const ListUsers = () => {

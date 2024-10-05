@@ -2,8 +2,9 @@ import React, { useState , useEffect } from "react";
 import { Table, Pagination, Button } from "react-bootstrap";
 import { BsCheckLg } from "react-icons/bs"; // Ícono de tilde grande
 import listRegisterService from "../../../services/booksService/diaryBookService/listRegisterService";
-import FilterByDataAndWord from "./FilterByDataAndWord";
+import FilterByDataAndWord from "../../../componentes/Books/DiaryBook/FilterByDataAndWord";
 import ReactHtmlTableExcel from 'react-html-table-to-excel';
+import CreateRegister from "../../../componentes/Books/DiaryBook/CreateRegister";
 
 const ListRegister = ({ updateCount }) => {
 
@@ -12,7 +13,7 @@ const ListRegister = ({ updateCount }) => {
   const [registrosByWord, setRegistrosByWord] = useState([]);  // Estado para almacenar los registros por palabra
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5; // Define el número de registros por página
-
+  const [showCreateModal, setShowCreateModal] = useState(false); //Modal para crear nuevo asiento
 
 
   // Función asincrónica para obtener los datos de la API
@@ -88,10 +89,41 @@ const ListRegister = ({ updateCount }) => {
     setCurrentPage(1); // Reiniciar la paginación
   };
 
+  //Funcion para el boton de Nuevo Asiento
+  const handleCreateClick = () => {
+    setShowCreateModal(true);// Muestra el modal de edición
+  };
+
+  // Función para manejar el guardado del nuevo usuario
+  const handleCreateSave = async (formData) => {
+    // Aquí enviarías newUser al backend para guardarlo en la base de datos
+    // Suponiendo que el backend responde con el usuario creado, podrías hacer algo así:
+    if(formData){
+        //vemos si funciona
+        console.log(formData);
+    }
+    setShowCreateModal(false); // Oculta el modal de creación
+  };
+
+  // Función para cerrar el modal de eliminacion
+  const handleCloseCreate = () => {
+    setShowCreateModal(false); // Cierra el modal
+  };
+
   return (
     
-    <div className="container-fluid mt-5 px-4">
-      <h4 className='mb-3 mx-4'>Libro Diario</h4>
+    <div className="container-fluid mt-4 px-4">
+      <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center mx-3">
+        <h4 className='mb-3 mx-4'>Libro Diario</h4>
+        <button type="button" className="btn btn-primary" onClick={() => handleCreateClick()}>Crear Asiento</button>
+      </div>
+      {/* Modal para crear un nuevo asiento */}
+      <CreateRegister
+          show={showCreateModal}
+          onCreate={handleCreateSave} // Pasa la función handleCreateSave como prop
+          onClose={handleCloseCreate} // Pasa la función handleCloseCreate como prop
+      />
+      
       <div className="mt-4 mb-4">
         <FilterByDataAndWord 
           onSearchDates={handleDateFilter}

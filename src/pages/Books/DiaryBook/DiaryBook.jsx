@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ListRegister from './ListRegister';
-import CreateRegister from './CreateRegister';
+import CreateRegister from '../../../componentes/Books/DiaryBook/CreateRegister';
 
 const DiaryBook = () => {
   const [updateCount, setUpdateCount] = useState(0); // Estado para manejar actualizaciones

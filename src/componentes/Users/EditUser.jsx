@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from 'react';
 import { Modal, Button, Form , InputGroup , Alert} from 'react-bootstrap';
-import editUserService from '../../services/editUserService';
+import editUserService from '../../services/users/editUserService';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const EditUser = ({ user,  onClose, onSave}) => {

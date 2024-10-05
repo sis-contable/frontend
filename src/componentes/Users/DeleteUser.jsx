@@ -1,5 +1,5 @@
 import { Modal, Button } from 'react-bootstrap';
-import deleteUserService from '../../services/deleteUserService';
+import deleteUserService from '../../services/users/deleteUserService';
 
 
 const DeleteUser = ({ userId, onClose, onDelete}) => {
