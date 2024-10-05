@@ -25,6 +25,9 @@ FilterByDataAndWord = ({ onSearchDates, onSearchKeyword }) => {
 
   useEffect(() => {
     if (keyword === '') {
+      // Si el campo de palabra clave está vacío, reinicia la lista a los datos originales
+      handleClearFilter(); // Función que limpia el filtro y muestra todos los registros
+    } else {
       handleSearchByKeyword(keyword); // Ejecuta la búsqueda solo si hay un valor
     }
   }, [keyword]);
@@ -35,6 +38,16 @@ FilterByDataAndWord = ({ onSearchDates, onSearchKeyword }) => {
       alert('Error al filtrar los registros');
     } else if (onSearchKeyword) {
       onSearchKeyword(result[0]); // Enviar los datos filtrados al componente padre
+    }
+  };
+
+  // Función para restablecer el filtro (mostrar todos los registros)
+  const handleClearFilter = async () => {
+    const result = await getListRegisterByDateService(); // Llama al servicio original para obtener todos los registros
+    if (result.error) {
+      alert('Error al cargar los registros');
+    } else if (onSearchDates) {
+      onSearchDates(result[0]); // Enviar los datos sin filtrar al componente padre
     }
   };
 

@@ -7,7 +7,7 @@ const getListRegisterByDateService = async (fecha_desde , fecha_hasta) => {
                 'Content-Type': 'application/json',
             }
         });
-        console.log(fecha_desde , fecha_hasta);
+
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }

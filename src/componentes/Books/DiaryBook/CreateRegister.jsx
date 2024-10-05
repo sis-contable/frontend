@@ -53,7 +53,7 @@ function CreateRegister({ show, onClose, onCreate }) {
     if (formData.length < 6) {
       setFormData([...formData, {
         id_usuario: storedIdUsuario || '',
-        fecha_registro: '',
+        fecha_registro: formData[0].fecha_registro,
         id_grupo: '', 
         id_tipo: '',    
         id_rubro: '',
@@ -187,10 +187,10 @@ function CreateRegister({ show, onClose, onCreate }) {
                 <SelectSubRubro idRubro={data.id_rubro} idSubRubro={data.id_sub_rubro} onSubRubroChange={(value) => handleChange({ target: { name: 'id_sub_rubro', value } }, index)} />
               </Col>
               <Col xs="12" md="6">
-                <SelectPaymentMethods idFormaPago={data.id_forma_pago} onPaymentChange={(value) => handleChange({ target: { name: 'id_forma_pago', value } }, index)} />
+                <SelectAccounts idCuenta={data.id_cuenta} onAccountChange={(value) => handleChange({ target: { name: 'id_cuenta', value } }, index)} />
               </Col>
               <Col xs="12" md="6">
-                <SelectAccounts idCuenta={data.id_cuenta} onAccountChange={(value) => handleChange({ target: { name: 'id_cuenta', value } }, index)} />
+                <SelectPaymentMethods idFormaPago={data.id_forma_pago} onPaymentChange={(value) => handleChange({ target: { name: 'id_forma_pago', value } }, index)} />
               </Col>
               <Col xs="12" md="6">
                 <Form.Control
