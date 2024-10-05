@@ -68,6 +68,14 @@ function CreateRegister({ show, onClose, onCreate }) {
     }
   };
 
+  const handleRemoveRegister = () => {
+    // Solo permite eliminar registros si hay más de uno
+    if (formData.length > 1) {
+      const updatedData = formData.slice(0, -1); // Elimina el último registro
+      setFormData(updatedData);
+    }
+  };  
+
    // Función para guardar los cambios y llamar a la función 'onCreate' pasada como prop
    const handleCreateAsiento = async () => {
     console.log(formData);
@@ -97,7 +105,7 @@ function CreateRegister({ show, onClose, onCreate }) {
           setShowAlertSuccess(false); // Oculta la alerta después de 2 segundos
           onCreate(createdRegister); // Llama a onCreate con el nuevo registro creado
           onClose(); // Cierra el modal
-        }, 900);
+        }, 2000);
       }
     }
   };
@@ -230,8 +238,11 @@ function CreateRegister({ show, onClose, onCreate }) {
     </Modal.Body>
           <Modal.Footer>
             <Row className="mt-3">
-              <Col className="d-flex justify-content-start">
-                <Button variant="secondary" onClick={handleAddForm}>
+              <Col className="btn btn-sm me-5">
+                <Button className="me-2" variant="danger" type="button" onClick={handleRemoveRegister}>
+                  -
+                </Button>
+                <Button variant="success" onClick={handleAddForm}>
                   +
                 </Button>
               </Col>
