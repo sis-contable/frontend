@@ -14,6 +14,7 @@ const Ledger = ({ updateCount }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5; // Define el número de registros por página
   const [nombreCuenta, setNombreCuenta] = useState('');
+  const [total, setTotal] = useState();
 
   // Función asincrónica para obtener los datos de la API
   const fetchData = async () => {
@@ -24,6 +25,7 @@ const Ledger = ({ updateCount }) => {
         // Actualizamos el estado 'registers' con los datos obtenidos
         setRegistros(result[0]); // Establecer solo el primer elemento que contiene los registros
         setNombreCuenta(result[0][0].sub_rubro);
+        setTotal(result[0][0].saldo_acumulado);
     } catch (error) {
         console.error('Error fetching users:', error);// Si ocurre un error, lo mostramos en la consola
     }
@@ -114,13 +116,12 @@ const Ledger = ({ updateCount }) => {
             <th>Haber</th>
             <th>S.Deudor</th>
             <th>S.Acredor</th>
-            <th>S.Acumulado</th>
           </tr>
         </thead>
         <tbody>
           {currentRecords.map((registro, index) => (
             <tr key={index} className={registro.id_libro_diario}>
-              <td>{registro.id_libro_diario}</td>
+              <td>{registro.asiento}</td>
               <td>{formatDate(registro.fecha_registro)}</td>
               <td>{id_cuenta}</td>
               <td>{registro.cuenta}</td>
@@ -128,9 +129,15 @@ const Ledger = ({ updateCount }) => {
               <td>{registro.haber}</td>
               <td>{registro.saldo_deudor}</td>
               <td>{registro.saldo_acreedor}</td>
-              <td>{registro.saldo_acumulado}</td>
             </tr>
           ))}
+          {currentPage === totalPages && (
+            <tr>
+              <td colSpan="6"></td>
+              <td className="text-center fw-bold">Total:</td>
+              <td >  { total } </td>
+            </tr>
+            )}
         </tbody>
       </Table>
       </div>
@@ -148,23 +155,29 @@ const Ledger = ({ updateCount }) => {
                 <th>Haber</th>
                 <th>S.Deudor</th>
                 <th>S.Acredor</th>
-                <th>S.Acumulado</th>
             </tr>
           </thead>
           <tbody>
             {registrosToShow.map((registro, index) => (
               <tr key={index} className={registro.id_libro_diario}>
-                <td>{registro.id_libro_diario}</td>
+                <td>{registro.asiento}</td>
                 <td>{formatDate(registro.fecha_registro)}</td>
                 <td>{registro.fecha}</td>
                 <td>{registro.codigo_cuenta2}</td>
                 <td>{registro.detalle}</td>
                 <td>{registro.debe}</td>
                 <td>{registro.haber}</td>
+                <td>{registro.saldo_deudor}</td>
                 <td>{registro.saldo_acreedor}</td>
-                <td>{registro.saldo_acumulado}</td>
               </tr>
             ))}
+            {/* Fila de totales que solo se muestra en la última página */}
+            {currentPage === totalPages && (
+            <tr>
+              <td colSpan="7" className="text-center fw-bold">Total:</td>
+              <td className="text-star fw-bold">  { total } </td>
+            </tr>
+            )}
           </tbody>
         </Table>
       </div>
