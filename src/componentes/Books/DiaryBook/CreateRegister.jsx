@@ -261,10 +261,10 @@ function CreateRegister({ show, onClose, onCreate }) {
               </Col>
               <Col className="d-flex justify-content-end">
               {/* Botón para guardar cambios y cerrar el modal */}
-                <Button className="me-2" variant="primary" onClick={handleCreateAsiento}>Guardar</Button>
+                <Button className="me-2 btn-sm" variant="primary" onClick={handleCreateAsiento}>Guardar</Button>
                 {/* Mostrar la alerta si showSuccess es true */}
                 {/* Botón para cerrar el modal sin guardar cambios */}
-                <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
+                <Button className="btn-sm" variant="secondary" onClick={handleClose}>Cancelar</Button>
               </Col>
             </Row>
           </Modal.Footer>
