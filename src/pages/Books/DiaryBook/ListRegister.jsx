@@ -226,14 +226,14 @@ const ListRegister = ({ updateCount }) => {
             disabled={currentPage === totalPages} 
           />
         </Pagination>
-        <div className="d-flex justify-content-between mb-2">
+        <div className="d-flex mb-2">
           <ReactHtmlTableExcel
             id="ExportarExcel"
             className ="btn btn-success btn-sm"
             table="tablaCompletaLibroDiario" //Lo linkeamos a la table
             filename="sisContable_Libros"
             sheet="libro_diario"
-            buttonText= "Exportar Excel"
+            buttonText= "Excel ↓ "
           />
         </div>
       </div>

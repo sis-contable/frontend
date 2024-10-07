@@ -38,13 +38,18 @@ function CreateRegister({ show, onClose, onCreate }) {
     })));
   }, [storedIdUsuario]);
 
+  //Actualiza dinámicamente el valor del campo en un array de objetos `formData`.
   const handleChange = (e, index) => {
+     // Extrae el nombre y el valor del campo que disparó el evento
     const { name, value } = e.target;
+    // Crea una copia del array de datos del formulario para evitar modificar el estado directamente
     const updatedData = [...formData];
+    // Actualiza el objeto correspondiente en el array, solo modificando el campo que ha cambiado
     updatedData[index] = {
-      ...updatedData[index],
-      [name]: value
+      ...updatedData[index],  // Copia el contenido existente del objeto en ese índice
+      [name]: value           // Actualiza el campo que corresponde al "name" del input con el nuevo valor
     };
+    // Establece el nuevo estado de formData con el array actualizado
     setFormData(updatedData);
   };
 
@@ -78,27 +83,30 @@ function CreateRegister({ show, onClose, onCreate }) {
 
    // Función para guardar los cambios y llamar a la función 'onCreate' pasada como prop
    const handleCreateAsiento = async () => {
-    console.log(formData);
+
     let valid = true;
-  
+    let sumaDebe = 0;
+    let sumaHaber = 0;
     // Verificamos que cada registro tenga valores válidos
     formData.forEach(data => {
       const debe = parseFloat(data.debe);
       const haber = parseFloat(data.haber);
-  
+      sumaDebe += debe;
+      sumaHaber += haber;
       // Si "Debe" y "Haber" no son válidos en alguno de los registros, no procedemos
       if ((debe === 0 && haber === 0) || (debe > 0 && haber > 0)) {
         valid = false;
-      }
+      } 
     });
   
-    if (!valid) {
+    if (!valid || sumaDebe !== sumaHaber) {
       setShowAlert(true);
     } else {
       // Si todo es válido, enviamos el array completo
       const createdRegister = await createRegisterService(formData);
       if (createdRegister.error) {
         // Mostrar la alerta de error si hubo un problema
+        setShowAlert(true);
       } else {
         setShowAlertSuccess(true); // Muestra la alerta de éxito
         setTimeout(() => {
@@ -147,7 +155,12 @@ function CreateRegister({ show, onClose, onCreate }) {
       )}
       {showAlert && (
         <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
-          "Debe" o "Haber" debe ser 0 , tampoco pueden ser los 2 valores 0.
+          1 - Uno de los importes, "Debe" o "Haber", debe ser cero.
+          <br />
+          2 - No pueden ser ambos importes cero simultáneamente.
+          <br />
+          3 - La suma total de los importes en "Debe" debe ser igual a 
+          <br />la suma total de los importes en "Haber".
         </Alert>
       )}
       {/* Renderizamos múltiples formularios */}
