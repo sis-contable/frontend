@@ -131,7 +131,8 @@ function CreateRegister({ show, onClose, onCreate }) {
       descripcion: '',
       debe: '',
       haber: '',
-      gestion: ''
+      gestion: '',
+      codigo_cuenta: ''
     }];
   
     //Agregamos un funcion para que vuelva todo a 0
