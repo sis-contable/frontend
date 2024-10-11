@@ -28,7 +28,8 @@ function CreateRegister({ show, onClose, onCreate }) {
     descripcion: '',
     debe: '',
     haber: '',
-    gestion: ''
+    gestion: '',
+    codigo_cuenta: ''
   }]);
 
   useEffect(() => {
@@ -68,7 +69,8 @@ function CreateRegister({ show, onClose, onCreate }) {
         descripcion: '',
         debe: '',
         haber: '',
-        gestion: ''
+        gestion: '',
+        codigo_cuenta: ''
       }]);
     }
   };
