@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react';
-import { Form, Button, Row, Col , Alert, Modal} from 'react-bootstrap';
+import { Form, Button, Row, Col , Modal} from 'react-bootstrap';
 import SelectGroup from './SelectGroup';
 import SelectType from './SelectType';
 import SelectRubro from './SelectRubro';
@@ -12,8 +12,8 @@ function CreateRegister({ show, onClose, onCreate }) {
 
   const storedIdUsuario = localStorage.getItem('id_usuario');
 
-  const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showModalSuccess, setShowModalSuccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   
   // El estado inicial con un array de registros
   const [formData, setFormData] = useState([{
@@ -28,8 +28,7 @@ function CreateRegister({ show, onClose, onCreate }) {
     descripcion: '',
     debe: '',
     haber: '',
-    gestion: '',
-    codigo_cuenta: ''
+    gestion: ''
   }]);
 
   useEffect(() => {
@@ -69,8 +68,7 @@ function CreateRegister({ show, onClose, onCreate }) {
         descripcion: '',
         debe: '',
         haber: '',
-        gestion: '',
-        codigo_cuenta: ''
+        gestion: ''
       }]);
     }
   };
@@ -102,17 +100,17 @@ function CreateRegister({ show, onClose, onCreate }) {
     });
   
     if (!valid || sumaDebe !== sumaHaber) {
-      setShowAlert(true);
+      setShowModal(true);
     } else {
       // Si todo es válido, enviamos el array completo
       const createdRegister = await createRegisterService(formData);
       if (createdRegister.error) {
-        // Mostrar la alerta de error si hubo un problema
-        setShowAlert(true);
+        // Mostrar la Modala de error si hubo un problema
+        setShowModal(true);
       } else {
-        setShowAlertSuccess(true); // Muestra la alerta de éxito
+        setShowModalSuccess(true); // Muestra la Modala de éxito
         setTimeout(() => {
-          setShowAlertSuccess(false); // Oculta la alerta después de 2 segundos
+          setShowModalSuccess(false); // Oculta la Modala después de 2 segundos
           onCreate(createdRegister); // Llama a onCreate con el nuevo registro creado
           onClose(); // Cierra el modal
         }, 2000);
@@ -133,8 +131,7 @@ function CreateRegister({ show, onClose, onCreate }) {
       descripcion: '',
       debe: '',
       haber: '',
-      gestion: '',
-      codigo_cuenta: ''
+      gestion: ''
     }];
   
     //Agregamos un funcion para que vuelva todo a 0
@@ -150,22 +147,34 @@ function CreateRegister({ show, onClose, onCreate }) {
           <Modal.Title>Nuevo Asiento</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-          {/* Mostrar la alerta si showSuccess es true */}
-          {showAlertSuccess && (
-      <Alert variant="success" onClose={() => setShowAlertSuccess(false)} dismissible>
-        ¡El registro se ha creado con éxito!
-      </Alert>
-      )}
-      {showAlert && (
-        <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
-          1 - Uno de los importes, "Debe" o "Haber", debe ser cero.
-          <br />
-          2 - No pueden ser ambos importes cero simultáneamente.
-          <br />
-          3 - La suma total de los importes en "Debe" debe ser igual a 
-          <br />la suma total de los importes en "Haber".
-        </Alert>
-      )}
+          {/* Mostrar la Modala si showSuccess es true */}
+          {showModalSuccess && (
+            <Modal className='p-5' show={showModalSuccess} onHide={() => setShowModalSuccess(false)} >
+                <Modal.Header className="bg-success text-white">
+                </Modal.Header>
+                <Modal.Body className="bg-success text-white ">
+                  Registros cargado con exito.
+                </Modal.Body>
+                <Modal.Footer className="bg-success text-white">
+                </Modal.Footer>
+            </Modal>
+          )}
+          {showModal && (
+            <Modal className='p-5' show={showModal} onHide={() => setShowModal(false)} >
+                <Modal.Header className="bg-danger text-white">
+                </Modal.Header>
+                <Modal.Body className="bg-danger text-white ">
+                  1 - Uno de los importes, "Debe" o "Haber", debe ser cero.
+                  <br />
+                  2 - No pueden ser ambos importes cero simultáneamente.
+                  <br />
+                  3 - La suma total de los importes en "Debe" debe ser igual a 
+                  <br />la suma total de los importes en "Haber".
+                </Modal.Body>
+                <Modal.Footer className="bg-danger text-white">
+                </Modal.Footer>
+            </Modal>
+          )}
       {/* Renderizamos múltiples formularios */}
       {formData.map((data, index) => (
           <Form key={index}>
@@ -265,7 +274,7 @@ function CreateRegister({ show, onClose, onCreate }) {
               <Col className="d-flex justify-content-end">
               {/* Botón para guardar cambios y cerrar el modal */}
                 <Button className="me-2 btn-sm" variant="primary" onClick={handleCreateAsiento}>Guardar</Button>
-                {/* Mostrar la alerta si showSuccess es true */}
+                {/* Mostrar la Modala si showSuccess es true */}
                 {/* Botón para cerrar el modal sin guardar cambios */}
                 <Button className="btn-sm" variant="secondary" onClick={handleClose}>Cancelar</Button>
               </Col>
