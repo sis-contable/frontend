@@ -7,17 +7,21 @@ import SelectSubRubro from './SelectSubrubro';
 import SelectPaymentMethods from './SelectPaymentMethods';
 import SelectAccounts from './SelectAccounts';
 import createRegisterService from '../../../services/booksService/diaryBookService/createRegisterService';
+import { jwtDecode } from 'jwt-decode'; //importamos libreria para decodificar el token
+import Cookies from 'js-cookie'; // Importamos la librería js-cookie para manejar cookies.
 
 function CreateRegister({ show, onClose, onCreate }) {
 
-  const storedIdUsuario = localStorage.getItem('id_usuario');
-
+  // Decodificamos el token para obtener el id_usuario
+  const token = Cookies.get('access_token');
+  const decodedToken = jwtDecode(token);
+  const id_user = decodedToken.id_usuario; // Extraemos el id_usuario del token
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   
   // El estado inicial con un array de registros
   const [formData, setFormData] = useState([{
-    id_usuario: storedIdUsuario || '', 
+    id_usuario: id_user, 
     fecha_registro: '',
     id_grupo: '', 
     id_tipo: '',    
@@ -32,12 +36,6 @@ function CreateRegister({ show, onClose, onCreate }) {
     codigo_cuenta: ''
   }]);
 
-  useEffect(() => {
-    setFormData(prevData => prevData.map(item => ({ 
-      ...item, 
-      id_usuario: storedIdUsuario 
-    })));
-  }, [storedIdUsuario]);
 
   //Actualiza dinámicamente el valor del campo en un array de objetos `formData`.
   const handleChange = (e, index) => {
@@ -58,7 +56,7 @@ function CreateRegister({ show, onClose, onCreate }) {
   const handleAddForm = () => {
     if (formData.length < 6) {
       setFormData([...formData, {
-        id_usuario: storedIdUsuario || '',
+        id_usuario: id_user,
         fecha_registro: formData[0].fecha_registro,
         id_grupo: '', 
         id_tipo: '',    
@@ -122,7 +120,7 @@ function CreateRegister({ show, onClose, onCreate }) {
 
     //Establecemos una forma inicial para que cuando cerremos el Pop Up, se reinicie a 0
     const initialFormData = [{
-      id_usuario: storedIdUsuario || '', 
+      id_usuario: id_user, 
       fecha_registro: '',
       id_grupo: '', 
       id_tipo: '',    

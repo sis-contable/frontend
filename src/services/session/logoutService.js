@@ -1,20 +1,20 @@
 // loginService.js
 
 // Definimos una función asincrónica que toma los datos del formulario como argumento
-const loginService = async (data) => {
+const logoutService = async () => {
     try {
       // Enviamos una solicitud POST al servidor con los datos del login
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch('http://localhost:3000/logout', {
         method: 'POST', // Método HTTP
+        credentials: 'include', // Esto es importante para enviar cookies
         headers: {
           'Content-Type': 'application/json', // Especificamos el tipo de contenido como JSON
         },
-        body: JSON.stringify(data), // Convertimos los datos a una cadena JSON y los enviamos en el cuerpo de la solicitud
       });
   
       // Convertimos la respuesta del servidor a un objeto JavaScript
       const result = await response.json();
-
+      console.log("cerrar sesion?", result)
       // Devolvemos el resultado para que pueda ser manejado en el componente de login
       return result;
     } catch (error) {
@@ -25,4 +25,4 @@ const loginService = async (data) => {
   };
   
   // Exportamos la función para que pueda ser utilizada en otros archivos
-  export default loginService;
+  export default logoutService;

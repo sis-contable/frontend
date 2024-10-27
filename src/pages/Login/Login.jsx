@@ -4,50 +4,39 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 // Importamos los estilos de Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 // Importamos la función de login desde el archivo loginService.js
-import loginService from '../../services/loginService.js';
-import App from '../../App.jsx';
+import loginService from '../../services/session/loginService.js';
+// Importamos la librería js-cookie para manejar cookies.
+import Cookies from 'js-cookie'; 
+
 
 // Definimos un componente funcional llamado Login utilizando una arrow function
-const Login = () => {
+const Login = ({ handleSuccessfulLogin } ) => {
   // Declaramos estados locales para manejar los inputs del formulario y el estado de la sesión
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
-  const [loginSuccessful, setLoginSuccessful] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  
   // Función que se ejecuta cuando se envía el formulario
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevenimos el comportamiento por defecto del formulario
-    const data = { usuario, clave }; // Creamos un objeto con los datos del formulario
+    e.preventDefault();
+    // Realiza la solicitud de inicio de sesión
     try {
-      // Llamamos a la función loginService para enviar los datos al servidor y obtener una respuesta
-      const result = await loginService(data);
-
-      // Si el servidor devuelve un token, lo almacenamos en localStorage y actualizamos el estado
-      if (result.token) {
-        localStorage.setItem('id_usuario' , result.id_usuario)
-        localStorage.setItem('token', result.token);
-        setLoginSuccessful(true);
+      const response = await loginService({ usuario, clave });
+      if (response) {
+        const token = Cookies.get('access_token'); // Asegúrate de que esto se llame después del inicio de sesión
+        handleSuccessfulLogin(token); // Pasa el token al manejador
       } else {
-        // Si no se recibe un token, mostramos un mensaje de error
-        setErrorMessage('Usuario o clave incorrecta');
+        console.error('Login failed:', response.message);
       }
     } catch (error) {
-      // Si ocurre un error durante el login, mostramos un mensaje de error
-      setErrorMessage('Error durante el login');
+      console.error('Login error:', error);
     }
   };
 
   // Retornamos el JSX para renderizar el componente
   return (
-    <>
-      {loginSuccessful ? (
-        // Si el login es exitoso, mostramos el componente APP
-        <App/>
-      ) : (
-        // Si el login no es exitoso, mostramos el formulario de login
         <Container className="mt-5">
           <Row className="justify-content-center">
             <Col xs={12} md={8} lg={5}>
@@ -81,8 +70,6 @@ const Login = () => {
             </Col>
           </Row>
         </Container>
-      )}
-    </>
   );
 };
 

@@ -89,9 +89,9 @@ const EditUser = ({ user,  onClose, onSave}) => {
                             <Form.Control
                                 type={showPassword ? 'text' : 'password'}
                                 name="password"
-                                value={editedUser.password}
                                 onChange={handleChange}
                                 aria-describedby="password-addon"
+                                placeholder="Ingresa tu nueva contraseña"
                             />
                             
                             <Button
