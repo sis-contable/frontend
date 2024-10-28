@@ -24,14 +24,17 @@ const Login = ({ handleSuccessfulLogin } ) => {
     // Realiza la solicitud de inicio de sesión
     try {
       const response = await loginService({ usuario, clave });
-      if (response) {
+      console.log(response);
+      if (response.success) {
         const token = Cookies.get('access_token'); // Asegúrate de que esto se llame después del inicio de sesión
         handleSuccessfulLogin(token); // Pasa el token al manejador
       } else {
         console.error('Login failed:', response.message);
+        setErrorMessage(response.message);
       }
     } catch (error) {
       console.error('Login error:', error);
+      setErrorMessage(response.message);
     }
   };
 

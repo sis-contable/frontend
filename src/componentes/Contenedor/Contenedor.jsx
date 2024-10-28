@@ -4,7 +4,7 @@ import App from '../../App'; // Importamos el componente principal de la aplicac
 import Login from '../../pages/Login/Login'; // Importamos el componente de inicio de sesión.
 
 const ContenedorX = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(Cookies.get('access_token') ? true : false); // Inicializamos según la cookie.
+  const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get('access_token')); // Inicializamos según la cookie.
 
   useEffect(() => {
     const checkCookie = () => {
