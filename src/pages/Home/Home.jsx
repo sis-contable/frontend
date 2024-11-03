@@ -1,6 +1,14 @@
+import ClosingSeat from "../../componentes/Balance/ClosingSeat";
+import ResultState from "../../componentes/Balance/resultState";
+import StatementFinancialPosition from "../../componentes/Balance/StatementFinancialPosition";
+
 const home = ()=>{
     return(
-        <div>Este es el inicio</div>
+        <>
+        <ResultState/>
+        <ClosingSeat/>
+        <StatementFinancialPosition/>
+        </>
     );
 }
 
