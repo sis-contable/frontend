@@ -17,18 +17,8 @@ const EditUser = ({ user,  onClose, onSave}) => {
 
     // Función para manejar cambios en los campos del formulario
     const handleChange = (e) => {
-        const userTypeMap = {
-            1: 'Administrador',
-            2: 'Espectador'
-        };
-        const { name, value } = e.target;
-        // Si el campo es 'id_tipo_usuario', convertir el valor a número entero y pasarle el tipo de usuario
-        if (name === 'id_tipo_usuario') {
-            const newValue = parseInt(value, 10);
-            setEditedUser({ ...editedUser, [name]: newValue, tipo_usuario: userTypeMap[newValue] });
-        } else {
-            setEditedUser({ ...editedUser, [name]: value });
-        }
+        const { name, newValue } = e.target;;
+        setEditedUser({ ...editedUser, [name]: newValue });
     };
 
      // Función para guardar los cambios y llamar a la función 'onSave' pasada como prop
@@ -104,18 +94,6 @@ const EditUser = ({ user,  onClose, onSave}) => {
                             </Button>
                             
                         </InputGroup>
-                    </Form.Group>
-                    {/* Campo de formulario para el tipo de usuario */}
-                    <Form.Group>
-                        <Form.Label>Tipo de Usuario</Form.Label>
-                        <Form.Select
-                            name="id_tipo_usuario"
-                            value={editedUser.id_tipo_usuario}
-                            onChange={handleChange}
-                        >
-                            <option value="1">Administrador</option>
-                            <option value="2">Espectador</option>
-                        </Form.Select>
                     </Form.Group>
                     {/* Campo de formulario para el email del usuario */}
                     <Form.Group>

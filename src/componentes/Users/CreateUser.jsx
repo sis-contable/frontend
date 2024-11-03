@@ -8,7 +8,6 @@ const CreateUser = ({ show, onClose, onCreate }) => {
         nombre: '',
         usuario: '',
         password: '',
-        id_tipo_usuario: 1, //Valor por defecto
         email: ''
     })
     const [showPassword, setShowPassword] = useState(false); // Estado para manejar la visibilidad de la contraseña
@@ -94,18 +93,6 @@ const CreateUser = ({ show, onClose, onCreate }) => {
                             </Button>
                             
                         </InputGroup>
-                    </Form.Group>
-                    {/* Campo de formulario para el tipo de usuario */}
-                    <Form.Group>
-                        <Form.Label>Tipo de Usuario</Form.Label>
-                        <Form.Select
-                            name="id_tipo_usuario"
-                            value={newUser.id_tipo_usuario}
-                            onChange={handleChange}
-                        >
-                            <option value="1">Administrador</option>
-                            <option value="2">Espectador</option>
-                        </Form.Select>
                     </Form.Group>
                     {/* Campo de formulario para el email del usuario */}
                     <Form.Group>

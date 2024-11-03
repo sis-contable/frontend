@@ -56,12 +56,9 @@ const ListUsers = () => {
         // Aquí enviarías newUser al backend para guardarlo en la base de datos
         // Suponiendo que el backend responde con el usuario creado, podrías hacer algo así:
         if(newUser){
-            // Definir el tipo de usuario basado en el id
-            const tipoUsuario = newUser.id_tipo_usuario === 1 ? 'Administrador' : 'Espectador';
             // Agregar el nuevo usuario al estado
             setUsers([...users, {
-                nombre: newUser.nombre,
-                tipo_usuario: tipoUsuario,
+                nombre: newUser.nombre
             }]);
         }
         setShowCreateModal(false); // Oculta el modal de creación
@@ -128,7 +125,6 @@ const ListUsers = () => {
                         <div>
                             {/* Nombre y rol del usuario */}
                             <h5>{user.nombre}</h5> 
-                            <small>{user.tipo_usuario}</small>
                         </div>
                         <div className="">
                             {/* Botones de acción para editar y eliminar usuarios, con la variable (user.id_usuario) obtenemos el id*/}

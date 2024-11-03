@@ -13,8 +13,8 @@ const ContenedorX = () => {
     };
     // Comprobamos la cookie inmediatamente
     checkCookie();
-    // Usamos setInterval para comprobar cada 1000 ms (1 segundo)
-    const interval = setInterval(checkCookie, 1000);
+    // Usamos setInterval para comprobar cada 5000 ms (5 segundo)
+    const interval = setInterval(checkCookie, 5000);
 
     // Limpiamos el intervalo al desmontar el componente
     return () => clearInterval(interval);
