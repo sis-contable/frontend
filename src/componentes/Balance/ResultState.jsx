@@ -1,58 +1,82 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import BalanceService from '../../services/balanceService/balanceService';
 import Table from 'react-bootstrap/Table';
 
 
-const ResultState = () => {
-    const [registro , setRegistro] = useState([]);
+const ResultState = ({fechaDesde , fechaHasta}) => {
+    const [resultadoPositivo , setResultadoPositivo] = useState([]);
+    const [resultadoNegativo , setResultadoNegativo] = useState([]);
+    const [resultadoEjercicio , setResultadoEjercicio] = useState();
 
-    const fetchData = () => {
-        //const result = await ResultStateService();
-
+    const fetchPositive = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const estadoResultado = JSON.parse(result.estadoResultado).Estado_resultado;
+            setResultadoPositivo(estadoResultado.cuentas_resultado_positivo);
+            return resultadoPositivo ;
+        }
+    }
+    const fetchNegative = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const estadoResultado = JSON.parse(result.estadoResultado).Estado_resultado;
+            setResultadoNegativo(estadoResultado.cuentas_resultado_negativo);
+            return resultadoNegativo;
+        }
     }
 
-    
+    const fetchResult = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const estadoResultado = JSON.parse(result.estadoResultado).Estado_resultado;
+            setResultadoEjercicio(estadoResultado.ganancia_del_ejercicio);
+            return resultadoEjercicio;
+        }
+    }
+
+    useEffect(() => {
+        fetchPositive();
+        fetchNegative();
+        fetchResult();
+    }, [fechaDesde, fechaHasta]);
+
+
 
     return (
         <div className="container mt-4">
-            <h3>Estado de resultado</h3>
+            <h4>Estado de resultado</h4>
             <Table bordered hover>
                 <thead>
                     <tr>
-                        <th>Sub rubro</th>
+                        <th>Resultado</th>
                         <th>$</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Ventas de bienes(o servicios)</td><td></td></tr>
-                    <tr><td>Costos de bienes vendidos</td><td></td></tr>
                     <tr>
-                        <td style={{ fontWeight: 'bold' }}>Ganancia (Pérdida) bruta</td>
-                        <td></td>
+                        <th>Resultado Positivo</th>
+                        <th></th>
                     </tr>
-                    <tr><td>Gastos de comercialización</td><td></td></tr>
-                    <tr><td>Gastos de administración</td><td></td></tr>
-                    <tr><td>Otros gastos</td><td></td></tr>
-                    <tr><td>Resultados Financieros y por tenencia:</td><td></td></tr>
-                    <tr>
-                        <td style={{ paddingLeft: '20px' }}>Generados por Activos</td>
-                        <td></td>
+                    {resultadoNegativo.map((resultadoNegativo, index) => (
+                        <tr key={index} className={resultadoNegativo}>
+                        <td>{resultadoNegativo.rubro}</td>
+                        <td>{resultadoNegativo.total}</td>
+                        </tr>))}
+
+                        <tr>
+                        <th>Resultado Negativo</th>
+                        <th></th>
                     </tr>
-                    <tr>
-                        <td style={{ paddingLeft: '20px' }}>Generados por Pasivos</td>
-                        <td></td>
-                    </tr>
-                    <tr><td>Otros ingresos y egresos</td><td></td></tr>
-                    <tr>
-                        <td style={{ fontWeight: 'bold' }}>Ganancia (Pérdida) antes del impuesto a las ganancias</td>
-                        <td></td>
-                    </tr>
-                    <tr><td>Impuesto a las ganancias</td><td></td></tr>
-                    <tr><td>Ganancia (Pérdida) a las operaciones ordinarias</td><td></td></tr>
-                    <tr><td>Resultado de operaciones extraordinarias</td><td></td></tr>
-                    <tr style={{ backgroundColor: '#a8f0a0', fontWeight: 'bold' }}>
+                    {resultadoPositivo.map((resultadoPositivo, index) => (
+                        <tr key={index} className={resultadoPositivo}>
+                        <td>{resultadoPositivo.rubro}</td>
+                        <td>{resultadoPositivo.total}</td>
+                        </tr>))}
+                   
+                    <tr className='bg-primary fw-bold'>
                         <td>GANANCIA(PERDIDA) DEL EJERCICIO</td>
-                        <td></td>
+                        <td>{resultadoEjercicio}</td>
                     </tr>
                 </tbody>
             </Table>

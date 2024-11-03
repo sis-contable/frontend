@@ -6,6 +6,8 @@ import ListRegister from './pages/Books/DiaryBook/ListRegister'; // Importamos l
 import AccountPlan from './pages/AccountPlan/ListAccountPlan'; // Importamos la página que muestra el plan de cuentas.
 import Login from './pages/Login/Login'; // Importamos la página de inicio de sesión.
 import Ledger from './pages/Books/Ledger/Ledger'; // Importamos la página que muestra el libro mayor.
+import Balance from './pages/Balance/Balance'; // Importamos la página que muestra el Balance.
+
 import React from 'react'; // Importamos React.
 
 const App = ({ setIsLoggedIn, isLoggedIn, handleSuccessfulLogin }) => {
@@ -20,6 +22,7 @@ const App = ({ setIsLoggedIn, isLoggedIn, handleSuccessfulLogin }) => {
           <Route path="/inicio" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} /> {/* Similar a la ruta anterior, redirige a Login si no está logueado. */}
           <Route path="/libro_diario" element={isLoggedIn ? <ListRegister /> : <Navigate to="/login" />} /> {/* Si está logueado, muestra ListRegister, si no, redirige a Login. */}
           <Route path="/plan_cuenta" element={isLoggedIn ? <AccountPlan /> : <Navigate to="/login" />} /> {/* Similar a la anterior, muestra AccountPlan o redirige. */}
+          <Route path="/balance" element={isLoggedIn ? <Balance /> : <Navigate to="/login" />} /> {/* Similar a la anterior, muestra Balance o redirige. */}
           <Route path="/usuarios" element={isLoggedIn ? <ListUsers /> : <Navigate to="/login" />} /> {/* Muestra ListUsers si está logueado, de lo contrario redirige. */}
           <Route path="/libro_mayor/:id_cuenta" element={isLoggedIn ? <Ledger /> : <Navigate to="/login" />} /> {/* Muestra Ledger si está logueado, redirige a Login si no. */}
         </Routes>

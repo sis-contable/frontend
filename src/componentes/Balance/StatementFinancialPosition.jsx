@@ -1,11 +1,100 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
+import BalanceService from '../../services/balanceService/balanceService';
 
-const StatementFinancialPosition = () => {
+const StatementFinancialPosition = ({fechaDesde , fechaHasta}) => {
+    
+    const [activoCorriente , setActivoCorriente] = useState([]);
+    const [activoNoCorriente , setActivoNoCorriente] = useState([]);
+    const [pasivoCorriente , setPasivoCorriente] = useState([]);
+    const [pasivoNoCorriente , setPasivoNoCorriente] = useState([]);
+    const [patrimonioNeto , setPatrimonioNeto] = useState([]);
+    const [totalActivos , setTotalActivos] = useState();
+    const [totalPasivosPN , setPasivosPN] = useState();
+
+    const fetchCurrentAsset = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const situacionPatrimonial = JSON.parse(result.situacionPatrimonial).Situacion_patrimonial;
+            setActivoCorriente(situacionPatrimonial.activo_corriente);
+
+            return activoCorriente;
+        }
+    }
+    const fetchCurrentLiabilites = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const situacionPatrimonial = JSON.parse(result.situacionPatrimonial).Situacion_patrimonial;
+            setPasivoCorriente(situacionPatrimonial.pasivo_corriente);
+
+            return pasivoCorriente;
+        }
+    }
+
+    const fetchNonCurrentAsset = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const situacionPatrimonial = JSON.parse(result.situacionPatrimonial).Situacion_patrimonial;
+            setActivoNoCorriente(situacionPatrimonial.activo_no_corriente);
+
+            return activoNoCorriente;
+        }
+    }
+    const fetchNonCurrentLiabilites = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const situacionPatrimonial = JSON.parse(result.situacionPatrimonial).Situacion_patrimonial;
+            setPasivoNoCorriente(situacionPatrimonial.pasivo_no_corriente);
+
+            return pasivoNoCorriente;
+        }
+    }
+
+    const fetchNetWorth = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const situacionPatrimonial = JSON.parse(result.situacionPatrimonial).Situacion_patrimonial;
+            setPatrimonioNeto(situacionPatrimonial.patrimonio_neto);
+
+            return patrimonioNeto;
+        }
+    }
+
+    const fetchTotalAsset = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const situacionPatrimonial = JSON.parse(result.situacionPatrimonial).Situacion_patrimonial;
+            setTotalActivos(situacionPatrimonial.total_activos);
+
+            return totalActivos;
+        }
+    }
+
+    const fetchTotalLiabilitesAndNetWorth = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const situacionPatrimonial = JSON.parse(result.situacionPatrimonial).Situacion_patrimonial;
+            setPasivosPN(situacionPatrimonial.total_pasivos_pn);
+
+            return totalPasivosPN;
+        }
+    }
+
+    useEffect(() => {
+        fetchCurrentAsset();
+        fetchCurrentLiabilites();
+        fetchNonCurrentAsset();
+        fetchNonCurrentLiabilites();
+        fetchNetWorth();
+        fetchTotalAsset();
+        fetchTotalLiabilitesAndNetWorth();
+    }, [fechaDesde, fechaHasta]);
+
     return (
         <div className="container mt-4">
-            <h3>Estado de Situación Patrimonial</h3>
-            <div className="d-flex justify-content-center">
+            <h4>Estado de Situación Patrimonial</h4>
+            <div className="d-flex justify-content-evenly">
                 {/* Tabla de Activos */}
                 <Table bordered hover style={{ width: '48%' }}>
                     <thead>
@@ -16,40 +105,27 @@ const StatementFinancialPosition = () => {
                     </thead>
                     <tbody>
                         <tr>
-                            <td style={{ fontWeight: 'bold' }}>Activos Corrientes</td>
+                            <td className='fw-bold'>Activos Corrientes</td>
                             <td></td>
                         </tr>
+                        {activoCorriente.map((activoCorriente, index) => (
+                        <tr key={index} className={activoCorriente}>
+                            <td>{activoCorriente.rubro}</td>
+                            <td>{activoCorriente.total}</td>
+                        </tr>))}
                         <tr>
-                            <td style={{ paddingLeft: '20px' }}>Caja y Bancos</td>
+                            <td className='fw-bold'>Activos No Corrientes</td>
                             <td></td>
                         </tr>
-                        <tr>
-                            <td style={{ paddingLeft: '20px' }}>Inversiones</td>
-                            <td></td>
-                        </tr>
-                        <tr style={{ fontWeight: 'bold' }}>
-                            <td>Total de Activos Corrientes</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: 'bold' }}>Activos No Corrientes</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td style={{ paddingLeft: '20px' }}>Créditos por ventas</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td style={{ paddingLeft: '20px' }}>Otros Créditos</td>
-                            <td></td>
-                        </tr>
-                        <tr style={{ fontWeight: 'bold' }}>
-                            <td>Total de Activos No Corrientes</td>
-                            <td></td>
-                        </tr>
-                        <tr style={{ backgroundColor: '#a8f0a0', fontWeight: 'bold' }}>
+                        {activoNoCorriente.map((activoNoCorriente, index) => (
+                        <tr key={index} className={activoNoCorriente}>
+                            <td>{activoNoCorriente.rubro}</td>
+                            <td>{activoNoCorriente.total}</td>
+                        </tr>))}
+                        
+                        <tr className='fw-bold'>
                             <td>TOTAL DEL ACTIVO</td>
-                            <td></td>
+                            <td>{totalActivos}</td>
                         </tr>
                     </tbody>
                 </Table>
@@ -67,41 +143,33 @@ const StatementFinancialPosition = () => {
                             <td style={{ fontWeight: 'bold' }}>Pasivos Corrientes</td>
                             <td></td>
                         </tr>
-                        <tr>
-                            <td style={{ paddingLeft: '20px' }}>Préstamos a corto plazo</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td style={{ paddingLeft: '20px' }}>Cuentas por pagar</td>
-                            <td></td>
-                        </tr>
-                        <tr style={{ fontWeight: 'bold' }}>
-                            <td>Total de Pasivos Corrientes</td>
-                            <td></td>
-                        </tr>
+                        {pasivoCorriente.map((pasivoCorriente, index) => (
+                        <tr key={index} className={pasivoCorriente}>
+                            <td>{pasivoCorriente.rubro}</td>
+                            <td>{pasivoCorriente.total}</td>
+                        </tr>))}
                         <tr>
                             <td style={{ fontWeight: 'bold' }}>Pasivos No Corrientes</td>
                             <td></td>
                         </tr>
-                        <tr>
-                            <td style={{ paddingLeft: '20px' }}>Préstamos a largo plazo</td>
-                            <td></td>
-                        </tr>
-                        <tr style={{ fontWeight: 'bold' }}>
-                            <td>Total de Pasivos No Corrientes</td>
-                            <td></td>
-                        </tr>
+                        {pasivoNoCorriente.map((pasivoNoCorriente, index) => (
+                        <tr key={index} className={pasivoCorriente}>
+                            <td>{pasivoNoCorriente.rubro}</td>
+                            <td>{pasivoNoCorriente.total}</td>
+                        </tr>))}
+                        
                         <tr style={{ fontWeight: 'bold' }}>
                             <td>Patrimonio Neto</td>
                             <td></td>
                         </tr>
-                        <tr style={{ paddingLeft: '20px' }}>
-                            <td>Total de Patrimonio Neto</td>
-                            <td></td>
-                        </tr>
+                        {patrimonioNeto.map((patrimonioNeto, index) => (
+                        <tr key={index} className={patrimonioNeto}>
+                            <td>{patrimonioNeto.rubro}</td>
+                            <td>{patrimonioNeto.total}</td>
+                        </tr>))}
                         <tr style={{ backgroundColor: '#a8f0a0', fontWeight: 'bold' }}>
                             <td>TOTAL DEL PASIVO + PATRIMONIO NETO</td>
-                            <td></td>
+                            <td>{totalPasivosPN}</td>
                         </tr>
                     </tbody>
                 </Table>

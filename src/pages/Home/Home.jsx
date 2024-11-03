@@ -4,11 +4,7 @@ import StatementFinancialPosition from "../../componentes/Balance/StatementFinan
 
 const home = ()=>{
     return(
-        <>
-        <ResultState/>
-        <ClosingSeat/>
-        <StatementFinancialPosition/>
-        </>
+        <p>INICIO</p>
     );
 }
 

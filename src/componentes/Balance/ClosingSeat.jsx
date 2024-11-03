@@ -1,10 +1,51 @@
 import React from 'react';
+import { useState , useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
+import BalanceService from '../../services/balanceService/balanceService';
 
-const ClosingSeat = () => {
+const ClosingSeat = ({fechaDesde , fechaHasta}) => {
+
+    const [resultadoPositivo , setResultadoPositivo] = useState([]);
+    const [resultadoNegativo , setResultadoNegativo] = useState([]);
+    const [resultadoEjercicio , setResultadoEjercicio] = useState();
+
+    const fetchPositive = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const estadoAsiento = JSON.parse(result.asientoCierre).Asiento_cierre;
+            setResultadoPositivo(estadoAsiento.cuentas_resultado_positivo);
+            return resultadoPositivo;
+        }
+    }
+    const fetchNegative = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const estadoAsiento = JSON.parse(result.asientoCierre).Asiento_cierre;
+            setResultadoNegativo(estadoAsiento.cuentas_resultado_negativo);
+
+            return resultadoNegativo;
+        }
+    }
+
+    const fetchResult = async () => {
+        if (fechaDesde && fechaHasta) {
+            const result = await BalanceService(fechaDesde , fechaHasta);
+            const estadoAsiento = JSON.parse(result.asientoCierre).Asiento_cierre;
+            setResultadoEjercicio(estadoAsiento.resultado_ejercico);
+
+            return resultadoEjercicio;
+        }
+    }
+
+    useEffect(() => {
+        fetchPositive();
+        fetchNegative();
+        fetchResult();
+    }, [fechaDesde, fechaHasta]);
+
     return (
         <div className="container mt-4">
-            <h3>Asiento de Cierre</h3>
+            <h4>Asiento de Cierre</h4>
             <Table bordered hover>
                 <thead>
                     <tr>
@@ -14,40 +55,34 @@ const ClosingSeat = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style={{ fontWeight: 'bold' }}>Resultados positivos</td>
-                        <td></td>
-                        <td></td>
+                <tr>
+                        <th>Resultado Positivo</th>
+                        <th></th>
+                        <th></th>
                     </tr>
-                    <tr>
-                        <td style={{ paddingLeft: '20px' }}>Ventas de bienes</td>
+                    {resultadoPositivo.map((resultadoPositivo, index) => (
+                        <tr key={index} className={resultadoPositivo}>
+                            <td>{resultadoPositivo.rubro}</td>
+                            <td>{resultadoPositivo.debe}</td>
                         <td></td>
-                        <td></td>
+                        </tr>))}
+
+                        <tr>
+                        <th>Resultado Negativo</th>
+                        <th></th>
+                        <th></th>
                     </tr>
-                    <tr>
-                        <td style={{ paddingLeft: '20px' }}>Ventas de Servicios</td>
+                    {resultadoNegativo.map((resultadoNegativo, index) => (
+                        <tr key={index} className={resultadoNegativo}>
+                            <td>{resultadoNegativo.rubro}</td>
+                            <td></td>
+                            <td>{resultadoNegativo.haber}</td>
+                        </tr>))}
+                   
+                    <tr className='bg-primary fw-bold'>
+                        <td>RESULTADO DEL EJERCICIO</td>
                         <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td style={{ fontWeight: 'bold' }}>Resultados negativos</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td style={{ paddingLeft: '20px' }}>Costo de ventas</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td style={{ paddingLeft: '20px' }}>Gastos administrativos</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr style={{ backgroundColor: '#a8f0a0', fontWeight: 'bold' }}>
-                        <td>Resultado del ejercicio</td>
-                        <td></td>
-                        <td></td>
+                        <td>{resultadoEjercicio}</td>
                     </tr>
                 </tbody>
             </Table>
