@@ -53,6 +53,7 @@ const Header = ({setIsLoggedIn}) => {
             <Link className="nav-link active" to="/inicio" onClick={handleNavCollapse}>Inicio</Link>
             <Link className="nav-link" to="/libro_diario" onClick={handleNavCollapse}>Libros</Link> 
             <Link className="nav-link" to="/plan_cuenta" onClick={handleNavCollapse}>Cuentas</Link>
+            <Link className="nav-link" to="/balance" onClick={handleNavCollapse}>Balance</Link>
             <Link className="nav-link" to="/usuarios" onClick={handleNavCollapse}>Usuarios</Link>
           </div>
           

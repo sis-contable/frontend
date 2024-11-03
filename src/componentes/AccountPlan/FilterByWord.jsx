@@ -28,8 +28,8 @@ const FilterByWord = ({ onSearchKeyword }) => {
     const result = await getListAccountPlanByWordService(); // Llama al servicio original para obtener todos los registros
     if (result.error) {
       alert('Error al cargar los registros');
-    } else if (onSearchDates) {
-      onSearchDates(result[0]); // Enviar los datos sin filtrar al componente padre
+    } else if (onSearchKeyword) {
+      onSearchKeyword(result[0]); // Enviar los datos sin filtrar al componente padre
     }
   };
 

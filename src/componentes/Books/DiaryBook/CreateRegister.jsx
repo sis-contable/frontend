@@ -32,8 +32,7 @@ function CreateRegister({ show, onClose, onCreate }) {
     descripcion: '',
     debe: '',
     haber: '',
-    gestion: '',
-    codigo_cuenta: ''
+    gestion: ''
   }]);
 
 
@@ -67,8 +66,7 @@ function CreateRegister({ show, onClose, onCreate }) {
         descripcion: '',
         debe: '',
         haber: '',
-        gestion: '',
-        codigo_cuenta: ''
+        gestion: ''
       }]);
     }
   };
@@ -131,8 +129,7 @@ function CreateRegister({ show, onClose, onCreate }) {
       descripcion: '',
       debe: '',
       haber: '',
-      gestion: '',
-      codigo_cuenta: ''
+      gestion: ''
     }];
   
     //Agregamos un funcion para que vuelva todo a 0
