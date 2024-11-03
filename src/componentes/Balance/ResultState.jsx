@@ -1,7 +1,18 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 
+
 const ResultState = () => {
+    const [registro , setRegistro] = useState([]);
+
+    const fetchData = () => {
+        //const result = await ResultStateService();
+
+    }
+
+    
+
     return (
         <div className="container mt-4">
             <h3>Estado de resultado</h3>

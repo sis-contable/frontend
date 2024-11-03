@@ -3,17 +3,26 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'; // Importa el JS de Bootstrap, 
 import { Nav } from 'react-bootstrap'; // Importa el componente Nav de react-bootstrap
 import { Link , useNavigate } from 'react-router-dom'; // Importa el componente Link de react-router-dom
 import React, { useState } from 'react';
+import logoutService from '../../services/session/logoutService';
+import Cookies from 'js-cookie';
 
-const Header = ({setLoginSuccessful}) => {
+const Header = ({setIsLoggedIn}) => {
 
   const navigate = useNavigate();
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token'); // Elimina el token del localStorage
-    setLoginSuccessful(false); // Actualiza el estado de loginSuccessful a false
-    navigate('/'); // Redirige al usuario a la página de inicio
-    window.location.reload();
+  const handleLogout = async () => {
+    const result = await logoutService(); // Realiza la llamada al backend para cerrar sesión
+    console.log(result);
+  
+    if (result) {
+      Cookies.remove('access_token'); // Elimina la cookie de autenticación
+      setIsLoggedIn(false); // Actualiza el estado de sesión
+      navigate('/'); // Redirige al usuario a la página de inicio
+      window.location.reload(); // Refresca la página para que el estado se actualice correctamente
+    } else {
+      console.log('Error al cerrar sesión');
+    }
   };
 
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
