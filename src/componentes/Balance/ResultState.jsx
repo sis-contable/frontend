@@ -58,20 +58,21 @@ const ResultState = ({fechaDesde , fechaHasta}) => {
                         <th>Resultado Positivo</th>
                         <th></th>
                     </tr>
-                    {resultadoNegativo.map((resultadoNegativo, index) => (
-                        <tr key={index} className={resultadoNegativo}>
-                        <td>{resultadoNegativo.rubro}</td>
-                        <td>{resultadoNegativo.total}</td>
+                    {resultadoPositivo.map((resultadoPositivo, index) => (
+                        <tr key={index} className={resultadoPositivo}>
+                            <td>{resultadoPositivo.rubro}</td>
+                            <td>{resultadoPositivo.total}</td>
                         </tr>))}
 
                         <tr>
                         <th>Resultado Negativo</th>
                         <th></th>
                     </tr>
-                    {resultadoPositivo.map((resultadoPositivo, index) => (
-                        <tr key={index} className={resultadoPositivo}>
-                        <td>{resultadoPositivo.rubro}</td>
-                        <td>{resultadoPositivo.total}</td>
+                    
+                        {resultadoNegativo.map((resultadoNegativo, index) => (
+                        <tr key={index} className={resultadoNegativo}>
+                            <td>{resultadoNegativo.rubro}</td>
+                            <td>{resultadoNegativo.total}</td>
                         </tr>))}
                    
                     <tr className='bg-primary fw-bold'>

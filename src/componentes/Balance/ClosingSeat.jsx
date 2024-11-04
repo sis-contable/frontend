@@ -60,24 +60,25 @@ const ClosingSeat = ({fechaDesde , fechaHasta}) => {
                         <th></th>
                         <th></th>
                     </tr>
-                    {resultadoPositivo.map((resultadoPositivo, index) => (
-                        <tr key={index} className={resultadoPositivo}>
-                            <td>{resultadoPositivo.rubro}</td>
-                            <td>{resultadoPositivo.debe}</td>
-                        <td></td>
-                        </tr>))}
+                    {resultadoNegativo.map((resultadoNegativo, index) => (
+                        <tr key={index} className={resultadoNegativo}>
+                            <td>{resultadoNegativo.rubro}</td>
+                            <td></td>
+                            <td>{resultadoNegativo.haber}</td>
+                    </tr>))}
 
                         <tr>
                         <th>Resultado Negativo</th>
                         <th></th>
                         <th></th>
                     </tr>
-                    {resultadoNegativo.map((resultadoNegativo, index) => (
-                        <tr key={index} className={resultadoNegativo}>
-                            <td>{resultadoNegativo.rubro}</td>
-                            <td></td>
-                            <td>{resultadoNegativo.haber}</td>
-                        </tr>))}
+                    
+                    {resultadoPositivo.map((resultadoPositivo, index) => (
+                        <tr key={index} className={resultadoPositivo}>
+                            <td>{resultadoPositivo.rubro}</td>
+                            <td>{resultadoPositivo.debe}</td>
+                        <td></td>
+                    </tr>))}
                    
                     <tr className='bg-primary fw-bold'>
                         <td>RESULTADO DEL EJERCICIO</td>
