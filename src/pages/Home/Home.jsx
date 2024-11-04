@@ -48,16 +48,7 @@ const Home = () => {
                 ></iframe>
             </div>
         </div>
-        <div className='row'>
-            <div style={{ minHeight: '600px', width: '100%' }}>
-                <iframe
-                    src="https://www.lanacion.com.ar/economia/"
-                    style={{ width: '100%', height: '100%' }}
-                    frameBorder="0"
-                    title="La Nación Economía"
-                ></iframe>
-            </div>
-        </div>
+
     </Container>  
     );
 }
