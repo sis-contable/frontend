@@ -5,91 +5,75 @@ import FilterByDataAndWord from "../../../componentes/Books/Ledger/FilterByDataA
 import ReactHtmlTableExcel from 'react-html-table-to-excel';
 import { useParams } from 'react-router-dom';
 
-const Ledger = ({ updateCount }) => {
+const Ledger = () => {
 
-  const { id_cuenta } = useParams();//Obtenemos el codigo de cuenta desde la url
-  const [registros, setRegistros] = useState([]);  // Estado para almacenar los registros
-  const [registrosByDate, setRegistrosByDate] = useState([]);  // Estado para almacenar los registros por fechas
-  const [registrosByWord, setRegistrosByWord] = useState([]);  // Estado para almacenar los registros por palabra
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 5; // Define el número de registros por página
-  const [nombreCuenta, setNombreCuenta] = useState('');
-  const [total, setTotal] = useState();
+  const { id_cuenta } = useParams(); // Obtenemos el código de cuenta desde la URL
+  const [registros, setRegistros] = useState([]); // Estado para los registros originales
+  const [filteredRecords, setFilteredRecords] = useState([]); // Estado para registros filtrados
+  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const recordsPerPage = 5; // Cantidad de registros por página
+  const [nombreCuenta, setNombreCuenta] = useState(""); // Nombre de la cuenta
+  const [total, setTotal] = useState(0); // Total acumulado de la cuenta
 
-  // Función asincrónica para obtener los datos de la API
+  // Función para obtener los datos del servicio
   const fetchData = async () => {
     try {
-
-        // Llamamos a la función del servicio para obtener la lista de registros del libro mayor de esa cuenta
-        const result = await listLedgerService(id_cuenta);
-        // Actualizamos el estado 'registers' con los datos obtenidos
-        setRegistros(result[0]); // Establecer solo el primer elemento que contiene los registros
-        setNombreCuenta(result[0][0].sub_rubro);
-        setTotal(result[0][0].saldo_acumulado);
+      const result = await listLedgerService(id_cuenta); // Llama al servicio para obtener datos del libro mayor
+      setRegistros(result[0]); // Guardar los registros originales
+      setFilteredRecords(result[0]); // Inicialmente, mostrar todos los registros como filtrados
+      setNombreCuenta(result[0][0]?.sub_rubro || ""); // Establece el nombre de la cuenta
+      setTotal(result[0][0]?.saldo_acumulado || 0); // Establece el saldo total
     } catch (error) {
-        console.error('Error fetching users:', error);// Si ocurre un error, lo mostramos en la consola
+      console.error("Error al obtener datos:", error);
     }
   };
 
-  // useEffect se ejecuta después del primer renderizado y cuando el componente se actualiza
+  // Cargar datos cuando se monta el componente o cambia la cuenta
   useEffect(() => {
-    fetchData();// Ejecutamos la función para obtener los datos
-  }, [id_cuenta , updateCount]);
+    fetchData();
+  }, [id_cuenta]);
 
-  const applyFilters = () => {
-    let filteredRecords = registros;
-
-    // Aplicar el filtro por palabra clave, si existe
-    if (registrosByWord && registrosByWord.length > 0) {
-      filteredRecords = registrosByWord;
+  // Función para manejar el filtro por palabra clave
+  const handleKeywordFilter = (filteredData) => {
+    if (filteredData && filteredData.length > 0) {
+      setFilteredRecords(filteredData); // Actualizar registros filtrados
+    } else {
+      setFilteredRecords(registros); // Si no hay filtro, mostrar los originales
     }
+    setCurrentPage(1); // Reiniciar la paginación
+  };
 
-    // Aplicar el filtro por fechas, si existe
-    if (registrosByDate && registrosByDate.length > 0) {
-      filteredRecords = registrosByDate;
+  // Función para manejar el filtro por fechas
+  const handleDateFilter = (filteredData) => {
+    if (filteredData && filteredData.length > 0) {
+      setFilteredRecords(filteredData); // Actualizar registros filtrados
+    } else {
+      setFilteredRecords(registros); // Si no hay filtro, mostrar los originales
     }
-    return filteredRecords;
-  }
+    setCurrentPage(1); // Reiniciar la paginación
+  };
 
-  //Obtenemos el tipo de registros que vamos a mostrar
-  const registrosToShow = applyFilters();
-
-  // Calcula los índices de los registros a mostrar en la página actual
+  // Calcular los índices de la paginación
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = registrosToShow.slice(indexOfFirstRecord, indexOfLastRecord);
+  const currentRecords = filteredRecords.slice(indexOfFirstRecord, indexOfLastRecord); // Obtener registros de la página actual
 
-  // Calcula el número total de páginas
-  const totalPages = Math.ceil(registrosToShow.length / recordsPerPage);
+  // Total de páginas
+  const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
 
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  //funcion para mostrar el formato de la fecha para el registro
+  // Formatear fechas para mostrar en la tabla
   const formatDate = (isoString) => {
-    const date = new Date(isoString); // Crea un objeto Date a partir del string ISO
-    return date.toLocaleDateString('es-ES', { // Formatea la fecha
-      day: '2-digit', 
-      month: '2-digit', 
-      year: 'numeric',
+    const date = new Date(isoString);
+    return date.toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
     });
-  };
-
-  // Función para filtrar por palabra clave
-  const handleKeywordFilter = (filteredData) => {
-    if (filteredData && filteredData.length > 0) { 
-      // Si hay datos filtrados, los asigna al estado
-      setRegistrosByWord(filteredData);
-    }
-    setCurrentPage(1); // Reiniciar la paginación
-  };
-
-  // Función para filtrar por fecha
-  const handleDateFilter = (filteredData) => {
-    setRegistrosByDate(filteredData);
-    setCurrentPage(1); // Reiniciar la paginación
   };
 
   return (
@@ -158,7 +142,7 @@ const Ledger = ({ updateCount }) => {
             </tr>
           </thead>
           <tbody>
-            {registrosToShow.map((registro, index) => (
+            {filteredRecords.map((registro, index) => (
               <tr key={index} className={registro.id_libro_diario}>
                 <td>{registro.asiento}</td>
                 <td>{formatDate(registro.fecha_registro)}</td>

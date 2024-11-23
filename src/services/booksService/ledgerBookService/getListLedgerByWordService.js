@@ -1,16 +1,15 @@
 // Servicio para obtener rubros basado en grupo y tipo
-const getListLedgerByWordService = async (keyword) => {
+const getListLedgerByWordService = async (keyword , id_cuenta) => {
     try {
-        const response = await fetch(`http://localhost:3000/lookForBookLedgerWord/${keyword}`, {
+        const response = await fetch(`http://localhost:3000/lookForLedgerWord/${keyword}/${id_cuenta}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
         });
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);   
         }
-
         const result = await response.json();
         return result;
     } catch (error) {

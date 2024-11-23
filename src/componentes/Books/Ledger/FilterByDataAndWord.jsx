@@ -11,15 +11,20 @@ const FilterByDataAndWord = ({ onSearchDates, onSearchKeyword, id_cuenta }) => {
   const [loadingToDate, setLoadingToDate] = useState(false); // Para manejar el estado de carga
 
   const handleSearchByDate = async () => {
-    setLoadingToDate(true); // Iniciar el estado de carga
-    const result = await getListLedgerByDateService(fechaDesde , fechaHasta); // Llamar al servicio
+    if ((fechaDesde == '' && fechaHasta == '') || (fechaDesde == '' || fechaHasta == '')) {
+      const result = null
+    } else {
+      setLoadingToDate(true); // Iniciar el estado de carga
+      const result = await getListLedgerByDateService(fechaDesde , fechaHasta , id_cuenta); // Llamar al servicio
 
-    if (result.error) {
-      alert('Error al filtrar los registros');
-    } else if (onSearchDates) {
-      onSearchDates(result[0]); // Enviar los datos filtrados al componente padre
+      if (result.error) {
+        alert('Error al filtrar los registros');
+      } else if (onSearchDates) {
+        onSearchDates(result[0]); // Enviar los datos filtrados al componente padre
+      }
+      setLoadingToDate(false); // Terminar el estado de carga
     }
-    setLoadingToDate(false); // Terminar el estado de carga
+    
   };
 
 
@@ -30,12 +35,15 @@ const FilterByDataAndWord = ({ onSearchDates, onSearchKeyword, id_cuenta }) => {
       // Si el campo de palabra clave está vacío, reinicia la lista a los datos originales
       handleClearFilter(); // Función que limpia el filtro y muestra todos los registros
     } else {
-      handleSearchByKeyword(keyword); // Ejecuta la búsqueda solo si hay un valor
+      handleSearchByKeyword(keyword , id_cuenta); // Ejecuta la búsqueda solo si hay un valor
     }
   }, [keyword]);
 
   const handleSearchByKeyword = async () => {
-    const result = await getListLedgerByWordService(keyword); // Llamar al servicio
+    if (keyword == '' ) {
+      
+    }
+    const result = await getListLedgerByWordService(keyword , id_cuenta); // Llamar al servicio
     if (result.error) {
       alert('Error al filtrar los registros');
     } else if (onSearchKeyword) {
