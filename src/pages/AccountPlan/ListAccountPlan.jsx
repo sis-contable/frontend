@@ -1,7 +1,8 @@
 import React, { useState , useEffect } from "react";
-import { Table, Pagination , Button } from "react-bootstrap";
+import { Table, Pagination , Button, Alert, Modal } from "react-bootstrap";
 import listAccountPlanServis from "../../services/accountPlan/listAccountPlanService"
 import FilterByWord from "../../componentes/AccountPlan/FilterByWord";
+import deletAccountService from "../../services/accountPlan/deletAccountService";
 import { useNavigate } from 'react-router-dom'; // Importa el hook
 
 const AccountPlan = ({updateCount}) => {
@@ -11,6 +12,11 @@ const AccountPlan = ({updateCount}) => {
     const [selectedRowData, setSelectedRowData] = useState(null); // Estado para los datos de la fila seleccionada
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 8; // Define el número de registros por página
+
+    const [showModal, setShowModal] = useState(false); // Controla la visibilidad del modal
+    const [showSuccess, setShowSuccess] = useState(false); // Controla la alerta de éxito
+    const [showError, setShowError] = useState(false); // Controla la alerta de error
+    const [message, setMessage] = useState(""); // Almacena el mensaje del backend
 
     // Función asincrónica para obtener los datos de la API
   const fetchData = async () => {
@@ -92,6 +98,47 @@ const AccountPlan = ({updateCount}) => {
     }
   };
 
+  //Funcion para eliminar una cuenta
+  const handleAccountDelet = async () => {
+    if (selectedRowData) {
+      try {
+        const codigo = selectedRowData;
+        // Llamamos a la función del servicio para eliminar la cuenta
+        const account = await deletAccountService(codigo);
+        if (account.status === 200) { // Si la respuesta es exitosa
+          setMessage(account.message);
+          setShowSuccess(true);
+          setTimeout(() => {
+              setShowSuccess(false);
+          }, 5000);
+        } else if (account.status === 400) {
+            setMessage(account.message);
+            setShowError(true); // Mostrar mensaje de error
+            setTimeout(() => {
+              setShowError(false);
+          }, 5000);
+        } else {
+          setMessage(account.message);
+          setShowError(true); // Mostrar mensaje de error
+          setTimeout(() => {
+            setShowError(false);
+        }, 5000);
+        }
+      } catch (error) {
+          console.error("Error al comunicarse con el servidor:", error);
+          setMessage(error);
+          setShowError(true); // Mostrar mensaje de error
+          setTimeout(() => {
+            setShowError(false);
+        }, 900);
+      }
+    }
+  };
+
+  //Funcion para abrir y cerrar el modal
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   return (
     <div className="container-fluid mt-4 px-4">
       <h4 className="mt-5 mx-4">Plan de Cuentas</h4>
@@ -100,6 +147,17 @@ const AccountPlan = ({updateCount}) => {
             onSearchKeyword={handleKeywordFilter}
         />
       </div>
+      {/* Alertas */}
+      {showSuccess && (
+        <Alert variant="success" onClose={() => setShowSuccess(false)} dismissible>
+          {message}
+        </Alert>
+      )}
+      {showError && (
+        <Alert variant="danger" onClose={() => setShowError(false)} dismissible>
+          {message}
+        </Alert>
+      )}
       <div className="table-responsive text-center">
         <Table striped bordered hover className="table-sm">
         <thead>
@@ -160,7 +218,33 @@ const AccountPlan = ({updateCount}) => {
             Ver Libro Mayor
           </Button>
         </div>
+        <div className="d-flex justify-content-between mb-2">
+          <Button className="btn btn-sm"
+            variant="danger" 
+            onClick={() => handleOpenModal()} 
+            disabled={!selectedRowData}
+          >
+            Eliminar Cuenta
+          </Button>
+        </div>
       </div>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar eliminación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>¿Está seguro de que desea eliminar esta cuenta?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={() => {
+            handleCloseModal();
+            handleAccountDelet();
+          }}>
+            Eliminar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 
