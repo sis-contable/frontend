@@ -1,7 +1,7 @@
 // Servicio para obtener rubros basado en grupo y tipo
 const getListRegisterByDateService = async (fecha_desde , fecha_hasta) => {
     try {
-        const response = await fetch(`http://localhost:3000/lookForBookDiaryDate/${fecha_desde}/${fecha_hasta}`, {
+        const response = await fetch(`/api/lookForBookDiaryDate/${fecha_desde}/${fecha_hasta}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

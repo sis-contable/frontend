@@ -4,7 +4,7 @@
 const loginService = async (data) => {
   try {
     // Enviamos una solicitud POST al servidor con los datos del login
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch('/api/login', {
       method: 'POST', // Método HTTP
       credentials: 'include', // Esto es importante para enviar cookies
       body: JSON.stringify(data), // Convertimos los datos a una cadena JSON y los enviamos en el cuerpo de la solicitud

@@ -1,7 +1,7 @@
 // Servicio para obtener Planes de cuenta por palabra clave
 const deletAccountService = async (codigo) => {
     try {
-        const response = await fetch(`http://localhost:3000/deletAccount/${codigo}`, {
+        const response = await fetch(`/api/deletAccount/${codigo}`, {
             method: 'POST',
         });
 

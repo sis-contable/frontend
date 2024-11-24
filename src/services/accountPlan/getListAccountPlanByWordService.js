@@ -1,7 +1,7 @@
 // Servicio para obtener Planes de cuenta por palabra clave
 const getListAccountPlanByWordService = async (keyword) => {
     try {
-        const response = await fetch(`http://localhost:3000/listAccountsPlanByKeyword/${keyword}`, {
+        const response = await fetch(`/api/listAccountsPlanByKeyword/${keyword}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -2,7 +2,7 @@
 const getTypeService = async () => {
     try {
       // Enviamos una solicitud GET al servidor para obtener la lista de tipos
-      const responseRegister = await fetch('http://localhost:3000/type', {
+      const responseRegister = await fetch('/api/type', {
         method: 'GET', // Método HTTP
         headers: {
           'Content-Type': 'application/json', // Especificamos el tipo de contenido como JSON

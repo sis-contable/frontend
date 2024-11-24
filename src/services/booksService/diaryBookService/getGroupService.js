@@ -2,7 +2,7 @@
 const getGroupService = async () => {
     try {
       // Enviamos una solicitud GET al servidor para obtener la lista de grupos
-      const responseRegister = await fetch('http://localhost:3000/group', {
+      const responseRegister = await fetch('/api/group', {
         method: 'GET', // Método HTTP
         headers: {
           'Content-Type': 'application/json', // Especificamos el tipo de contenido como JSON

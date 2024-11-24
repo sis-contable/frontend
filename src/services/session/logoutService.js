@@ -4,7 +4,7 @@
 const logoutService = async () => {
     try {
       // Enviamos una solicitud POST al servidor con los datos del login
-      const response = await fetch('http://localhost:3000/logout', {
+      const response = await fetch('/api/logout', {
         method: 'POST', // Método HTTP
         credentials: 'include', // Esto es importante para enviar cookies
         headers: {

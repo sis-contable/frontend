@@ -2,7 +2,7 @@
 const listRegisterService = async () => {
     try {
       // Enviamos una solicitud GET al servidor para obtener la lista de usuarios
-      const responseRegister = await fetch('http://localhost:3000/listBookDiary', {
+      const responseRegister = await fetch('/api/listBookDiary', {
         method: 'GET', // Método HTTP
         headers: {
           'Content-Type': 'application/json', // Especificamos el tipo de contenido como JSON

@@ -1,6 +1,6 @@
 const BalanceService = async(fechaDesde , fechaHasta) => { 
     try {
-        const response = await fetch(`http://localhost:3000/creatBalance/${fechaDesde}/${fechaHasta}`, {
+        const response = await fetch(`/api/creatBalance/${fechaDesde}/${fechaHasta}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

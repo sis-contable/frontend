@@ -1,6 +1,6 @@
 const createRegisterService = async (newRegister) => {
     try {
-        const response = await fetch(`http://localhost:3000/createRegisterBookDiary`, {
+        const response = await fetch(`/api/createRegisterBookDiary`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

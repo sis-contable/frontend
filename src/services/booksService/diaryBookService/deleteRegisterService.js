@@ -2,7 +2,7 @@ const deleteRegisterService = async (registerID) => {
     try {
 
         console.log('ID del registro:', registerID); 
-        const response = await fetch(`http://localhost:3000/deleteBookDiary/${registerID}`, {
+        const response = await fetch(`/api/deleteBookDiary/${registerID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
