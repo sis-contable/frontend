@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import BalanceService from '../../services/balanceService/balanceService';
 import Table from 'react-bootstrap/Table';
+import Card from 'react-bootstrap/Card';
 
 
 const ResultState = ({fechaDesde , fechaHasta}) => {
@@ -45,42 +46,47 @@ const ResultState = ({fechaDesde , fechaHasta}) => {
 
     return (
         <div className="container mt-4">
-            <h4>Estado de resultado</h4>
-            <Table bordered hover>
-                <thead>
-                    <tr>
-                        <th>Resultado</th>
-                        <th>$</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Resultado Positivo</th>
-                        <th></th>
-                    </tr>
-                    {resultadoPositivo.map((resultadoPositivo, index) => (
-                        <tr key={index} className={resultadoPositivo}>
-                            <td>{resultadoPositivo.rubro}</td>
-                            <td>{resultadoPositivo.total}</td>
-                        </tr>))}
-
-                        <tr>
-                        <th>Resultado Negativo</th>
-                        <th></th>
-                    </tr>
-                    
-                        {resultadoNegativo.map((resultadoNegativo, index) => (
-                        <tr key={index} className={resultadoNegativo}>
-                            <td>{resultadoNegativo.rubro}</td>
-                            <td>{resultadoNegativo.total}</td>
-                        </tr>))}
-                   
-                    <tr className='bg-primary fw-bold'>
-                        <td>GANANCIA(PERDIDA) DEL EJERCICIO</td>
-                        <td>{resultadoEjercicio}</td>
-                    </tr>
-                </tbody>
-            </Table>
+            <Card className="shadow-sm border-0 mb-4">
+                <Card.Header className="bg-secondary text-white text-center fw-bold">
+                    Estado de Resultado
+                </Card.Header>
+                <Card.Body>
+                    <Table bordered hover responsive className="table-striped">
+                        <thead className="bg-secondary text-white">
+                            <tr>
+                                <th>Resultado</th>
+                                <th className="text-center">$</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="fw-bold bg-light">
+                                <td>Resultado Positivo</td>
+                                <td></td>
+                            </tr>
+                            {resultadoPositivo.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.rubro}</td>
+                                    <td className="text-center">{item.total}</td>
+                                </tr>
+                            ))}
+                            <tr className="fw-bold bg-light">
+                                <td>Resultado Negativo</td>
+                                <td></td>
+                            </tr>
+                            {resultadoNegativo.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.rubro}</td>
+                                    <td className="text-center">{item.total}</td>
+                                </tr>
+                            ))}
+                            <tr className="bg-primary text-white fw-bold">
+                                <td>GANANCIA (PÉRDIDA) DEL EJERCICIO</td>
+                                <td className="text-center">{resultadoEjercicio}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                </Card.Body>
+            </Card>
         </div>
     );
 };

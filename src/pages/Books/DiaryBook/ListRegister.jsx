@@ -12,7 +12,7 @@ const ListRegister = ({ updateCount }) => {
   const [registrosByDate, setRegistrosByDate] = useState([]);  // Estado para almacenar los registros por fechas
   const [registrosByWord, setRegistrosByWord] = useState([]);  // Estado para almacenar los registros por palabra
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 5; // Define el número de registros por página
+  const recordsPerPage = 8; // Define el número de registros por página
   const [showCreateModal, setShowCreateModal] = useState(false); //Modal para crear nuevo asiento
 
 

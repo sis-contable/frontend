@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState , useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
+import Card from 'react-bootstrap/Card';
 import BalanceService from '../../services/balanceService/balanceService';
 
 const ClosingSeat = ({fechaDesde , fechaHasta}) => {
@@ -45,48 +46,53 @@ const ClosingSeat = ({fechaDesde , fechaHasta}) => {
 
     return (
         <div className="container mt-4">
-            <h4>Asiento de Cierre</h4>
-            <Table bordered hover>
-                <thead>
-                    <tr>
-                        <th>Asiento de cierre</th>
-                        <th>Debe</th>
-                        <th>Haber</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                        <th>Resultado Positivo</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    {resultadoNegativo.map((resultadoNegativo, index) => (
-                        <tr key={index} className={resultadoNegativo}>
-                            <td>{resultadoNegativo.rubro}</td>
-                            <td></td>
-                            <td>{resultadoNegativo.haber}</td>
-                    </tr>))}
-
-                        <tr>
-                        <th>Resultado Negativo</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    
-                    {resultadoPositivo.map((resultadoPositivo, index) => (
-                        <tr key={index} className={resultadoPositivo}>
-                            <td>{resultadoPositivo.rubro}</td>
-                            <td>{resultadoPositivo.debe}</td>
-                        <td></td>
-                    </tr>))}
-                   
-                    <tr className='bg-primary fw-bold'>
-                        <td>RESULTADO DEL EJERCICIO</td>
-                        <td></td>
-                        <td>{resultadoEjercicio}</td>
-                    </tr>
-                </tbody>
-            </Table>
+            <Card className="shadow-sm border-0 mb-4">
+                <Card.Header className="bg-secondary text-white text-center fw-bold">
+                    Asiento de Cierre
+                </Card.Header>
+                <Card.Body>
+                    <Table bordered hover responsive className="table-striped">
+                        <thead className="bg-secondary text-white">
+                            <tr>
+                                <th>Asiento de Cierre</th>
+                                <th className="text-center">Debe</th>
+                                <th className="text-center">Haber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="fw-bold bg-light">
+                                <td>Resultado Positivo</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {resultadoNegativo.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.rubro}</td>
+                                    <td></td>
+                                    <td className="text-center">{item.haber}</td>
+                                </tr>
+                            ))}
+                            <tr className="fw-bold bg-light">
+                                <td>Resultado Negativo</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {resultadoPositivo.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.rubro}</td>
+                                    <td className="text-center">{item.debe}</td>
+                                    <td></td>
+                                </tr>
+                            ))}
+                            <tr className="bg-primary text-white fw-bold">
+                                <td>RESULTADO DEL EJERCICIO</td>
+                                <td></td>
+                                <td className="text-center">{resultadoEjercicio}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                </Card.Body>
+            </Card>
         </div>
     );
 };

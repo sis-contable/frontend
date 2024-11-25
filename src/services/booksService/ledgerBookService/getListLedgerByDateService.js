@@ -1,7 +1,7 @@
 // Servicio para obtener rubros basado en grupo y tipo
 const getListLedgerByDateService = async (fecha_desde , fecha_hasta , id_cuenta) => {
     try {
-        const response = await fetch(`http://localhost:3000/LookForLedgerDate/${fecha_desde}/${fecha_hasta}/${id_cuenta}`, {
+        const response = await fetch(`api/LookForLedgerDate/${fecha_desde}/${fecha_hasta}/${id_cuenta}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

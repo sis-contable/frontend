@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
+import Card from 'react-bootstrap/Card';
 import BalanceService from '../../services/balanceService/balanceService';
 
 const StatementFinancialPosition = ({fechaDesde , fechaHasta}) => {
@@ -93,86 +94,103 @@ const StatementFinancialPosition = ({fechaDesde , fechaHasta}) => {
 
     return (
         <div className="container mt-4">
-            <h4>Estado de Situación Patrimonial</h4>
-            <div className="d-flex justify-content-evenly">
-                {/* Tabla de Activos */}
-                <Table bordered hover style={{ width: '48%' }}>
-                    <thead>
-                        <tr>
-                            <th>Activos</th>
-                            <th>$</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className='fw-bold'>Activos Corrientes</td>
-                            <td></td>
-                        </tr>
-                        {activoCorriente.map((activoCorriente, index) => (
-                        <tr key={index} className={activoCorriente}>
-                            <td>{activoCorriente.rubro}</td>
-                            <td>{activoCorriente.total}</td>
-                        </tr>))}
-                        <tr>
-                            <td className='fw-bold'>Activos No Corrientes</td>
-                            <td></td>
-                        </tr>
-                        {activoNoCorriente.map((activoNoCorriente, index) => (
-                        <tr key={index} className={activoNoCorriente}>
-                            <td>{activoNoCorriente.rubro}</td>
-                            <td>{activoNoCorriente.total}</td>
-                        </tr>))}
-                        
-                        <tr className='fw-bold'>
-                            <td>TOTAL DEL ACTIVO</td>
-                            <td>{totalActivos}</td>
-                        </tr>
-                    </tbody>
-                </Table>
+            <h4 className="text-center text-primary mb-4">Estado de Situación Patrimonial</h4>
+            <div className="row g-4">
+                {/* Activos */}
+                <div className="col-md-6">
+                    <Card className="shadow-sm border-0">
+                        <Card.Header className="bg-primary text-white text-center">Activos</Card.Header>
+                        <Card.Body>
+                            <Table bordered hover responsive className="table-striped">
+                                <thead className="table-light">
+                                    <tr>
+                                        <th>Rubro</th>
+                                        <th>Importe ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr className="fw-bold table-secondary">
+                                        <td>Activos Corrientes</td>
+                                        <td></td>
+                                    </tr>
+                                    {activoCorriente.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.rubro}</td>
+                                            <td>{item.total}</td>
+                                        </tr>
+                                    ))}
+                                    <tr className="fw-bold table-secondary">
+                                        <td>Activos No Corrientes</td>
+                                        <td></td>
+                                    </tr>
+                                    {activoNoCorriente.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.rubro}</td>
+                                            <td>{item.total}</td>
+                                        </tr>
+                                    ))}
+                                    <tr className="fw-bold bg-success text-white">
+                                        <td>Total del Activo</td>
+                                        <td>{totalActivos}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </Card.Body>
+                    </Card>
+                </div>
 
-                {/* Tabla de Pasivos y Patrimonio Neto */}
-                <Table bordered hover style={{ width: '48%' }}>
-                    <thead>
-                        <tr>
-                            <th>Pasivos</th>
-                            <th>$</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style={{ fontWeight: 'bold' }}>Pasivos Corrientes</td>
-                            <td></td>
-                        </tr>
-                        {pasivoCorriente.map((pasivoCorriente, index) => (
-                        <tr key={index} className={pasivoCorriente}>
-                            <td>{pasivoCorriente.rubro}</td>
-                            <td>{pasivoCorriente.total}</td>
-                        </tr>))}
-                        <tr>
-                            <td style={{ fontWeight: 'bold' }}>Pasivos No Corrientes</td>
-                            <td></td>
-                        </tr>
-                        {pasivoNoCorriente.map((pasivoNoCorriente, index) => (
-                        <tr key={index} className={pasivoCorriente}>
-                            <td>{pasivoNoCorriente.rubro}</td>
-                            <td>{pasivoNoCorriente.total}</td>
-                        </tr>))}
-                        
-                        <tr style={{ fontWeight: 'bold' }}>
-                            <td>Patrimonio Neto</td>
-                            <td></td>
-                        </tr>
-                        {patrimonioNeto.map((patrimonioNeto, index) => (
-                        <tr key={index} className={patrimonioNeto}>
-                            <td>{patrimonioNeto.rubro}</td>
-                            <td>{patrimonioNeto.total}</td>
-                        </tr>))}
-                        <tr style={{ backgroundColor: '#a8f0a0', fontWeight: 'bold' }}>
-                            <td>TOTAL DEL PASIVO + PATRIMONIO NETO</td>
-                            <td>{totalPasivosPN}</td>
-                        </tr>
-                    </tbody>
-                </Table>
+                {/* Pasivos y Patrimonio Neto */}
+                <div className="col-md-6">
+                    <Card className="shadow-sm border-0">
+                        <Card.Header className="bg-danger text-white text-center">Pasivos y Patrimonio Neto</Card.Header>
+                        <Card.Body>
+                            <Table bordered hover responsive className="table-striped">
+                                <thead className="table-light">
+                                    <tr>
+                                        <th>Rubro</th>
+                                        <th>Importe ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr className="fw-bold table-secondary">
+                                        <td>Pasivos Corrientes</td>
+                                        <td></td>
+                                    </tr>
+                                    {pasivoCorriente.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.rubro}</td>
+                                            <td>{item.total}</td>
+                                        </tr>
+                                    ))}
+                                    <tr className="fw-bold table-secondary">
+                                        <td>Pasivos No Corrientes</td>
+                                        <td></td>
+                                    </tr>
+                                    {pasivoNoCorriente.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.rubro}</td>
+                                            <td>{item.total}</td>
+                                        </tr>
+                                    ))}
+                                    <tr className="fw-bold table-secondary">
+                                        <td>Patrimonio Neto</td>
+                                        <td></td>
+                                    </tr>
+                                    {patrimonioNeto.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.rubro}</td>
+                                            <td>{item.total}</td>
+                                        </tr>
+                                    ))}
+                                    <tr className="fw-bold bg-warning text-white">
+                                        <td>Total del Pasivo + Patrimonio Neto</td>
+                                        <td>{totalPasivosPN}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </Card.Body>
+                    </Card>
+                </div>
             </div>
         </div>
     );

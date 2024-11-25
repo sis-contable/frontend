@@ -36,6 +36,22 @@ function CreateRegister({ show, onClose, onCreate }) {
   }]);
 
 
+  //Establecemos una forma inicial para que cuando cerremos el Pop Up o creemos un registro, se reinicie a 0
+  const initialFormData = [{
+    id_usuario: id_user, 
+    fecha_registro: '',
+    id_grupo: '', 
+    id_tipo: '',    
+    id_rubro: '',
+    id_sub_rubro: '',    
+    id_forma_pago: '',
+    id_cuenta: '',
+    descripcion: '',
+    debe: '',
+    haber: '',
+    gestion: ''
+  }];
+
   //Actualiza dinámicamente el valor del campo en un array de objetos `formData`.
   const handleChange = (e, index) => {
      // Extrae el nombre y el valor del campo que disparó el evento
@@ -91,10 +107,18 @@ function CreateRegister({ show, onClose, onCreate }) {
       const haber = parseFloat(data.haber);
       sumaDebe += debe;
       sumaHaber += haber;
-      // Si "Debe" y "Haber" no son válidos en alguno de los registros, no procedemos
-      if ((debe === 0 && haber === 0) || (debe > 0 && haber > 0)) {
-        valid = false;
-      } 
+      const id_grupo = data.id_grupo; // Obtén el grupo asociado al registro
+      // IDs de grupo para R+ y R-
+      const r_positivo = 4; // Reemplaza con el ID real de R+
+      const r_negativo = 5; // Reemplaza con el ID real de R-
+      // Validaciones para errores
+      if ((debe === 0 && haber === 0) ||       // Ambos valores son cero
+          (debe > 0 && haber > 0) ||          // Ambos valores tienen datos, lo cual es inválido
+          (id_grupo === r_positivo && debe > 0) || // R+ no puede impactar el debe
+          (id_grupo === r_negativo && haber > 0)   // R- no puede impactar el haber
+        ) {
+            valid = false; // Marca como inválido si alguna condición falla
+      }
     });
   
     if (!valid || sumaDebe !== sumaHaber) {
@@ -110,33 +134,18 @@ function CreateRegister({ show, onClose, onCreate }) {
         setTimeout(() => {
           setShowModalSuccess(false); // Oculta la Modala después de 2 segundos
           onCreate(createdRegister); // Llama a onCreate con el nuevo registro creado
+          setFormData(initialFormData);
           onClose(); // Cierra el modal
         }, 2000);
       }
     }
   };
-
-    //Establecemos una forma inicial para que cuando cerremos el Pop Up, se reinicie a 0
-    const initialFormData = [{
-      id_usuario: id_user, 
-      fecha_registro: '',
-      id_grupo: '', 
-      id_tipo: '',    
-      id_rubro: '',
-      id_sub_rubro: '',    
-      id_forma_pago: '',
-      id_cuenta: '',
-      descripcion: '',
-      debe: '',
-      haber: '',
-      gestion: ''
-    }];
   
-    //Agregamos un funcion para que vuelva todo a 0
-    const handleClose = () => {
-      setFormData(initialFormData); // Reinicia el formData
-      onClose(); // Llama a la función onClose para cerrar el modal
-    };
+  //Agregamos un funcion para que vuelva todo a 0
+  const handleClose = () => {
+    setFormData(initialFormData); // Reinicia el formData
+    onClose(); // Llama a la función onClose para cerrar el modal
+  };
   
 
   return (
@@ -168,6 +177,9 @@ function CreateRegister({ show, onClose, onCreate }) {
                   <br />
                   3 - La suma total de los importes en "Debe" debe ser igual a 
                   <br />la suma total de los importes en "Haber".
+                  <br />
+                  4 - R+ solo impacta en el "Haber". 
+                  <br />R- solo impacta en el "Debe".
                 </Modal.Body>
                 <Modal.Footer className="bg-danger text-white">
                 </Modal.Footer>

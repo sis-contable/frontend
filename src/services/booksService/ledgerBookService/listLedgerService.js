@@ -2,7 +2,7 @@
 const listLedgerterService = async (codigo_cuenta) => {
     try {
       // Enviamos una solicitud GET al servidor para obtener la lista de usuarios
-      const responseRegister = await fetch(`http://localhost:3000/listBookLedger/${codigo_cuenta}`, {
+      const responseRegister = await fetch(`/api/listBookLedger/${codigo_cuenta}`, {
         method: 'GET', // Método HTTP
         headers: {
           'Content-Type': 'application/json', // Especificamos el tipo de contenido como JSON
