@@ -1,6 +1,6 @@
 const createUserService = async (newUser) => {
     try {
-        const response = await fetch(`http://localhost:3000/createUser`, {
+        const response = await fetch(`/api/createUser`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

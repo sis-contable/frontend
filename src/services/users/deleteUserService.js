@@ -2,7 +2,7 @@ const deleteUserService = async (userId) => {
     try {
 
         console.log('ID del usuario:', userId); 
-        const response = await fetch(`http://localhost:3000/deleteUser/${userId}`, {
+        const response = await fetch(`/api/deleteUser/${userId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 const editUserService = async (editedUser) => {
     try {
-        const response = await fetch(`http://localhost:3000/editUser/${editedUser.id_usuario}`, {
+        const response = await fetch(`/api/editUser/${editedUser.id_usuario}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

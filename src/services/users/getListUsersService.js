@@ -2,7 +2,7 @@
 const getListUsersService = async () => {
     try {
       // Enviamos una solicitud GET al servidor para obtener la lista de usuarios
-      const responsUsers = await fetch('http://localhost:3000/listUsers', {
+      const responsUsers = await fetch('/api/listUsers', {
         method: 'GET', // Método HTTP
         headers: {
           'Content-Type': 'application/json', // Especificamos el tipo de contenido como JSON
